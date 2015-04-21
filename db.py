@@ -25,7 +25,9 @@ def createTable(tablename, attr):
 def createTables():
     '(re)creates tables for users, places, and reviews'
     #dropTable('users')
+    #dropTable('trips')
     createTable('users', [('username','text'),('pw','text')]) ##not sure what else needs to go here
+    createTable('trips', [('user', 'text'), ('name', 'text')])
    
 def validateUser(user, pw):
    # for row in c.execute("SELECT oid,* FROM users"):
@@ -103,3 +105,25 @@ def getUsers():
         users[row[0]]=content
     return users
 
+
+def addTrip(user, name):
+    conn=sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (user, name)
+    c.execute("INSERT INTO trips VALUES (?,?)", t)
+    conn.commit()
+    print "added %s to %s's trips" %(name, user)
+
+
+def getTrips():
+    'returns a list of trips'
+    conn=sqlite3.connect('data.db')
+    c = conn.cursor()
+    trips = []
+    for row in c.execute("SELECT rowid,* FROM trips"):
+        trips.append({"id":row[0], "user":row[1], "name":row[2]})
+    print "list of all trips"
+    return trips
+
+    
+    
