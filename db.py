@@ -115,15 +115,38 @@ def addTrip(user, name):
     print "added %s to %s's trips" %(name, user)
 
 
-def getTrips():
+# def getTrips():
+#     'returns a list of trips'
+#     conn=sqlite3.connect('data.db')
+#     c = conn.cursor()
+#     trips = []
+#     for row in c.execute("SELECT rowid,* FROM trips"):
+#         trips.append({"id":row[0], "user":row[1], "name":row[2]})
+#     print "list of all trips"
+#     return trips
+
+def getTrips(userID):
     'returns a list of trips'
-    conn=sqlite3.connect('data.db')
+    conn = sqlite3.connect('data.db')
     c = conn.cursor()
+    t = (userID, )
     trips = []
-    for row in c.execute("SELECT rowid,* FROM trips"):
+    for row in c.execute('SELECT rowid,* FROM trips WHERE user=?',t):
         trips.append({"id":row[0], "user":row[1], "name":row[2]})
-    print "list of all trips"
+    print 'trips for user with id '+`userID`+`trips`
     return trips
 
+def getTrip(userID,name):
+    'returns given trip'
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (userID, name)
+    trip = {}    
+    for row in c.execute('SELECT rowid,* FROM trips WHERE user=? AND name=?',t):
+        trip['id']=row[0]
+        trip['user']=row[1]
+        trip['name']=row[2]
+    print 'trip for user with id %s and name %s'%(userID,name) + `trip`
+    return trip
     
     
