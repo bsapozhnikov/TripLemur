@@ -23,12 +23,18 @@ def createTable(tablename, attr):
     print ("CREATE TABLE %s(%s)") % (tablename, s)
 
 def createTables():
-    '(re)creates tables for users, places, and reviews'
-    #dropTable('users')
-    #dropTable('trips')
     createTable('users', [('username','text'),('pw','text')]) ##not sure what else needs to go here
     createTable('trips', [('user', 'text'), ('name', 'text')])
-   
+    createTable('nodes', [('tripID', 'integer'), ('name', 'text'),
+                          ('position', "integer")])
+    createTable('links', [("startID", "integer"), ("endID", "integer")])
+
+def dropTables():
+    dropTable('users')
+    dropTable('trips')
+    dropTable('nodes')
+    dropTable('links')
+    
 def validateUser(user, pw):
    # for row in c.execute("SELECT oid,* FROM users"):
     #    content = {'username':row[1],'pw':row[2]}
@@ -133,7 +139,7 @@ def getTrips(userID):
     trips = []
     for row in c.execute('SELECT rowid,* FROM trips WHERE user=?',t):
         trips.append({"id":row[0], "user":row[1], "name":row[2]})
-    print 'trips for user with id '+`userID`+`trips`
+    print 'trips for user with id '+`userID`+": "+`trips`
     return trips
 
 def getTrip(userID,name):
@@ -149,4 +155,40 @@ def getTrip(userID,name):
     print 'trip for user with id %s and name %s'%(userID,name) + `trip`
     return trip
     
-    
+def addNode(tripID, name, position=-1):
+    conn=sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (tripID, name, position)
+    c.execute("INSERT INTO nodes VALUES (?,?,?)", t)
+    conn.commit()
+    print "added %s to trip %s's nodes" %(name, tripID)
+
+def getNodes(tripID):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (tripID, )
+    nodes = []
+    for row in c.execute("SELECT rowid,* FROM nodes WHERE tripID=?", t):
+        nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3]})
+    print "nodes for trip with id "+`tripID`+": "+`nodes`
+    return nodes
+
+def addLink(startID, endID):
+    conn=sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (startID, endID)
+    c.execute("INSERT INTO nodes VALUES (?,?)", t)
+    conn.commit()
+    print "added link from node %s to node %s"%(startID,endID)
+
+def getLink(startID, endID):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (startID, endID)
+    link = {}
+    for row in c.execute("SELECT rowid,* FROM links WHERE startID=? AND endID=?", t):
+        link['id']=row[0]
+        link['startID']=row[1]
+        link['endID']=row[2]
+    print "link from node %s to node %s"%(startID,endID)
+    return link
