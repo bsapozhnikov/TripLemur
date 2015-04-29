@@ -10,7 +10,13 @@ App.addRegions({
 });
 
 App.on('start',function(){
-    var placesView = new App.PlacesView({collection:c});
+    var tripView = new App.PlacesView({collection:tripPlaces});
+    App.tripProper.show(tripView);
+    
+    var reserveView = new App.PlacesView({collection:reservePlaces});
+    App.reserve.show(reserveView);
+    
+    var placesView = new App.PlacesView({collection:placesPlaces});
     App.places.show(placesView);
     
     var infoView = new App.InfoView({model:p1});
@@ -18,7 +24,7 @@ App.on('start',function(){
 });
 
 App.PlaceView = Marionette.ItemView.extend({
-    template: "#place-template"
+    template: "#place-template",
 });
 
 App.InfoView = Marionette.ItemView.extend({
@@ -44,6 +50,22 @@ var p2 = new Place({
     about: "this is also a place"
 });
 
-var c = new Places([p1,p2]);
+var placesPlaces = new Places([p1,p2]);
+var reservePlaces = new Places([]);
+var tripPlaces = new Places([]);
+
+var places = document.getElementsByClassName("place");
+console.log(places);
+
+for(var i=0; i < places.length; i++){
+    console.log(places[i]);
+    places[i].addEventListener('mouseover', function(e){
+	console.log("click");
+	for(var j=0; j<places.length; j++){
+	    //places[j].setAttribute('background-color','#FFFFFF');
+	}
+	//places[i].setAttribute('background-color','#DDDDEE');
+    });
+}
 
 App.start();
