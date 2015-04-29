@@ -83,11 +83,15 @@ def existingName(username):
     return False ## I think this IS right
 
 def updatePass(username, oldpw, newpw):
-    conn = sqlite3.connect('data.db')
-    c = conn.cursor()
-    c.execute("UPDATE users SET pw = ? WHERE username = ? and pw = ?", (newpw,username,oldpw)) 
-    conn.commit()
-    print "updated password"
+    if (getUser(username) != None and oldpw == getUser(username)["pw"]):
+        conn = sqlite3.connect('data.db')
+        c = conn.cursor()
+        c.execute("UPDATE users SET pw = ? WHERE username = ? and pw = ?", (newpw,username,oldpw)) 
+        conn.commit()
+        print "updated password"
+        return True
+    print "wrong"
+    return False
 
 def getUser(user):
     '''returns user as a dictionary
@@ -177,7 +181,7 @@ def addLink(startID, endID):
     conn=sqlite3.connect('data.db')
     c = conn.cursor()
     t = (startID, endID)
-    c.execute("INSERT INTO nodes VALUES (?,?)", t)
+    c.execute("INSERT INTO links VALUES (?,?)", t)
     conn.commit()
     print "added link from node %s to node %s"%(startID,endID)
 
