@@ -38,9 +38,18 @@ App.PlacesView = Marionette.CollectionView.extend({
     childView: App.PlaceView
 });
 
-var Place = Backbone.Model.extend();
+var Place = Backbone.Model.extend({
+    urlRoot: '/places'
+});
 var Places = Backbone.Collection.extend({
-    model:Place
+    model:Place,
+    url: '/places',
+    initialize: function(){
+	this.fetch(function(d){
+	    console.log(d);
+	    this.render();
+	});
+    }
 });
 
 var p1 = new Place({
