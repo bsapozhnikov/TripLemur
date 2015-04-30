@@ -25,6 +25,9 @@ App.on('start',function(){
 
 App.PlaceView = Marionette.ItemView.extend({
     template: "#place-template",
+    events :{
+	'mouseover' : function(){console.log('click');}
+    }
 });
 
 App.InfoView = Marionette.ItemView.extend({
@@ -54,18 +57,6 @@ var placesPlaces = new Places([p1,p2]);
 var reservePlaces = new Places([]);
 var tripPlaces = new Places([]);
 
-var places = document.getElementsByClassName("place");
-console.log(places);
-
-for(var i=0; i < places.length; i++){
-    console.log(places[i]);
-    places[i].addEventListener('mouseover', function(e){
-	console.log("click");
-	for(var j=0; j<places.length; j++){
-	    //places[j].setAttribute('background-color','#FFFFFF');
-	}
-	//places[i].setAttribute('background-color','#DDDDEE');
-    });
-}
-
 App.start();
+
+
