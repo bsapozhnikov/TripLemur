@@ -64,6 +64,12 @@ def register():
 def logout():
     session.pop('user',None)
     return redirect('/login')
+
+## RETURNS USERS, NOT PLACES ##
+@app.route('/places',methods=['GET','POST'])
+def handlePlaces():
+    if request.method=='GET':
+        return db.getUsers() 
     
 if __name__ == '__main__':
     app.debug=True
