@@ -1,5 +1,6 @@
 console.log("Hello");
 
+var userID = parseInt($('#userID').val())
 var App = new Marionette.Application();
 
 App.addRegions({
@@ -45,7 +46,7 @@ var Places = Backbone.Collection.extend({
     model:Place,
     url: '/places',
     initialize: function(){
-	this.fetch(function(d){
+	this.fetch({data: $.param({'userID':userID})},function(d){
 	    console.log(d);
 	    this.render();
 	});

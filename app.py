@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, render_template, session, flash
-import db, cgi
+import db, cgi, json
 
 app = Flask(__name__)
 app.secret_key = 'insert_clever_secret_here'
@@ -28,16 +28,23 @@ def login():
         pw = cgi.escape(request.form['pass'],quote=True)
         if db.validateUser(user,pw):
             session['user']=user
+            session['userID']=db.getUserID(user)
             if 'return_to' in session:
                 s = session['return_to']
                 session.pop('return_to',None)
                 return redirect(s)
             else:
-                return redirect('home.html')
+                return redirect('/home')
         else:
             flash('Please enter a valid username and password')
             return render_template('login.html')
 
+@app.route('/home',methods=['GET','POST'])
+def home():
+    if 'user' in session:
+        if request.method=='GET':
+            return render_template('trip.html',userID=session['userID'])
+        
 @app.route('/register',methods=['GET','POST'])
 def register():
     if "user" in session:
@@ -63,14 +70,15 @@ def register():
 @app.route('/logout')
 def logout():
     session.pop('user',None)
+    session.pop('userID',None)
     return redirect('/login')
 
-## RETURNS USERS, NOT PLACES ##
 @app.route('/places',methods=['GET','POST'])
 def handlePlaces():
     if request.method=='GET':
-        return db.getUsers() 
-    
+        userID = request.args.get('userID')
+        print 'requested userID: '+request.args.get('userID')
+        return json.dumps(db.getTrips(userID))
 if __name__ == '__main__':
     app.debug=True
     app.run()
