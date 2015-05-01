@@ -102,7 +102,16 @@ def getUser(user):
         if some['username'] == user:
             some['oid']=userID
             return some
-    
+
+def getUserID(username):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    userID = -1
+    t = (username, )
+    for row in c.execute('SELECT oid FROM users WHERE username=?',t):
+        userID = row[0]
+    return userID
+        
 def getUsers():
     '''returns dictionary of users: 
     the key is the unique id
@@ -136,11 +145,11 @@ def addTrip(user, name):
 #     return trips
 
 def getTrips(userID):
-    'returns a list of trips'
+    'returns a collection of trips'
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
     t = (userID, )
-    trips = []
+    trips = {}
     for row in c.execute('SELECT rowid,* FROM trips WHERE user=?',t):
         trips.append({"id":row[0], "user":row[1], "name":row[2]})
     print 'trips for user with id '+`userID`+": "+`trips`
@@ -171,7 +180,7 @@ def getNodes(tripID):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
     t = (tripID, )
-    nodes = []
+    nodes = {}
     for row in c.execute("SELECT rowid,* FROM nodes WHERE tripID=?", t):
         nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3]})
     print "nodes for trip with id "+`tripID`+": "+`nodes`
