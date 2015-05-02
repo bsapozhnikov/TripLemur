@@ -79,6 +79,9 @@ def handlePlaces():
         userID = request.args.get('userID')
         print 'requested userID: '+request.args.get('userID')
         return json.dumps(db.getTrips(userID))
+    else:
+        db.addTrip(session['userID'],request.json['name'])
+        return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
 if __name__ == '__main__':
     app.debug=True
     app.run()
