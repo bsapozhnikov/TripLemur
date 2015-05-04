@@ -35,8 +35,25 @@ App.InfoView = Marionette.ItemView.extend({
     template: "#info-template"
 });
 
-App.PlacesView = Marionette.CollectionView.extend({
-    childView: App.PlaceView
+App.PlacesView = Marionette.CompositeView.extend({
+    template: '#place-composite-template',
+    childView: App.PlaceView,
+    childViewContainer : 'ul',
+    modelEvents : {
+	'change' : function() {this.render();}
+    },
+    events : {
+	'click #addplace' : function(){
+	    console.log('clicked button addplace');
+	    var n = $('#newplacename').val();
+	    if (n.length > 0){
+		var newP = new Place({name:n});
+		this.collection.add(newP);
+		newP.save();
+		$('#newplacename').val('');
+	    }
+	}
+    }
 });
 
 var Place = Backbone.Model.extend({
