@@ -61,8 +61,10 @@ def addUser(username, pw):
         c.execute("INSERT INTO users VALUES ('%s','%s')" %(username,pw))
         conn.commit()
         print "added %s to users" % (username)
+        return True
     else:
         print "Username already taken. Please enter a different username"
+        return False
 
 '''add place into db
 still needs an existingPlace method to check if a the place is already in the db'''
@@ -149,7 +151,7 @@ def getTrips(userID):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
     t = (userID, )
-    trips = {}
+    trips = []
     for row in c.execute('SELECT rowid,* FROM trips WHERE user=?',t):
         trips.append({"id":row[0], "user":row[1], "name":row[2]})
     print 'trips for user with id '+`userID`+": "+`trips`
@@ -180,7 +182,7 @@ def getNodes(tripID):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
     t = (tripID, )
-    nodes = {}
+    nodes = []
     for row in c.execute("SELECT rowid,* FROM nodes WHERE tripID=?", t):
         nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3]})
     print "nodes for trip with id "+`tripID`+": "+`nodes`

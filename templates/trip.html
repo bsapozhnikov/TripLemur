@@ -9,9 +9,15 @@
 
   <body>
     <input type="hidden" name="userID" id="userID" value="{{userID|safe}}" />
+    <script type="text/template" id="place-composite-template">
+      <ul>
+      </ul>
+      New Place: <input type="text" id="newplacename">
+      <button id="addplace">Add</button>
+    </script>
     <script type="text/template" id="place-template">
       <div class="place">
-	<%- name%>
+	<li><%- name%></li>
       </div>
     </script>
     
@@ -20,13 +26,13 @@
       <br>
       <%- about%>
     </script>
-    
+
     <table border="1px"><tr><th>Trip Proper</th><th>Reserve</th><th>Places</th><th>Info</th></tr>
       <tr>
-	<td id="tripProper"></td>
-	<td id="reserve"></td>
-	<td id="places"></td>
-	<td id="info"></td>
+    	<td id="tripProper"></td>
+    	<td id="reserve"></td>
+    	<td id="places"></td>
+    	<td id="info"></td>
       </tr>
     </table>
 

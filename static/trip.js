@@ -1,6 +1,6 @@
 console.log("Hello");
 
-var userID = parseInt($('#userID').val())
+var userID = parseInt($('#userID').val());
 var App = new Marionette.Application();
 
 App.addRegions({
@@ -17,7 +17,7 @@ App.on('start',function(){
     var reserveView = new App.PlacesView({collection:reservePlaces});
     App.reserve.show(reserveView);
     
-    var placesView = new App.PlacesView({collection:placesPlaces});
+    var placesView = new App.PlacesPlacesView({collection:placesPlaces});
     App.places.show(placesView);
     
     var infoView = new App.InfoView({model:p1});
@@ -35,8 +35,31 @@ App.InfoView = Marionette.ItemView.extend({
     template: "#info-template"
 });
 
-App.PlacesView = Marionette.CollectionView.extend({
-    childView: App.PlaceView
+App.PlacesView = Marionette.CompositeView.extend({
+    template: '#place-composite-template',
+    childView: App.PlaceView,
+    childViewContainer : 'ul',
+    modelEvents : {
+	'change' : function() {this.render();}
+    },
+    events : {
+    }
+});
+
+App.PlacesPlacesView = App.PlacesView.extend({
+    events : {
+	'click #addplace' : function(){
+	    console.log('clicked button addplace');
+	    var n = $('#newplacename').val();
+	    if (n.length > 0){
+		var newP = new Place({name:n});
+		this.collection.add(newP);
+		newP.save();
+		$('#newplacename').val('');
+	    }
+	}
+
+    }
 });
 
 var Place = Backbone.Model.extend({

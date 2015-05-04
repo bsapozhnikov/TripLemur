@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../static/lib/jquery.js"></script>
+    <script src="../static/lib/lodash.js"></script>
+    <script src="../static/lib/backbone.js"></script>
+    <script src="../static/lib/backbone.marionette.js"></script>
+  </head>
+
+  <body>
+    <input type="hidden" name="userID" id="userID" value="{{userID|safe}}" />
+    <script type="text/template" id="trip-composite-template">
+      <ul>
+      </ul>
+      New Trip: <input type="text" id="newtripname">
+      <button id="addtrip">Add</button>
+    </script>
+    <script type="text/template" id="trip-template">
+      <div class="trip">
+	<li><%- name%></li>
+      </div>
+    </script>
+    
+    <script type="text/template" id="info-template">
+      <h4><%- name%></h4>
+      <br>
+      <%- about%>
+    </script>
+
+    <div id="wrapper">
+	<div id="trips"></div>
+	<div id="info"></div>
+    </div>
+    <!-- <table border="1px"><tr><th>Trip Proper</th><th>Reserve</th><th>Places</th><th>Info</th></tr>
+	    <tr>
+    	    <td id="tripProper"></td>
+    	    <td id="reserve"></td>
+    	    <td id="places"></td>
+    	    <td id="info"></td>
+	    </tr>
+	    </table> -->
+    <script src="../static/trips.js"></script>
+  </body>
+</html>

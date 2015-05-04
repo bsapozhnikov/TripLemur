@@ -43,7 +43,7 @@ def login():
 def home():
     if 'user' in session:
         if request.method=='GET':
-            return render_template('trip.html',userID=session['userID'])
+            return render_template('trips.html',userID=session['userID'])
         
 @app.route('/register',methods=['GET','POST'])
 def register():
@@ -73,8 +73,8 @@ def logout():
     session.pop('userID',None)
     return redirect('/login')
 
-@app.route('/places',methods=['GET','POST'])
-def handlePlaces():
+@app.route('/trips',methods=['GET','POST'])
+def handleTripRequest():
     if request.method=='GET':
         userID = request.args.get('userID')
         print 'requested userID: '+request.args.get('userID')
@@ -82,6 +82,16 @@ def handlePlaces():
     else:
         db.addTrip(session['userID'],request.json['name'])
         return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
+        
+# @app.route('/places',methods=['GET','POST'])
+# def handlePlaces():
+#     if request.method=='GET':
+#         userID = request.args.get('userID')
+#         print 'requested userID: '+request.args.get('userID')
+#         return json.dumps(db.getTrips(userID))
+#     else:
+#         db.addTrip(session['userID'],request.json['name'])
+#         return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
 if __name__ == '__main__':
     app.debug=True
     app.run()
