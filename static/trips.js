@@ -19,7 +19,11 @@ App.on('start',function(){
 App.TripView = Marionette.ItemView.extend({
     template: "#trip-template",
     events :{
-	'mouseover' : function(){console.log('click');}
+	'mouseover' : function(){
+//	    console.log(this.model);
+	    var infoView = new App.InfoView({model:this.model});
+	    App.info.show(infoView);
+	}
     }
 });
 
@@ -39,7 +43,7 @@ App.TripsView = Marionette.CompositeView.extend({
 	    console.log('clicked button addtrip');
 	    var n = $('#newtripname').val();
 	    if (n.length > 0){
-		var newT = new Trip({name:n});
+		var newT = new Trip({name:n, about:n});
 		this.collection.add(newT);
 		newT.save();
 		$('#newtripname').val('');
@@ -66,6 +70,8 @@ var p1 = new Trip({
     name:"test",
     about: "this is a place"
 });
+
+console.log(p1);
 
 var trips = new Trips([]);
 
