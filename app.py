@@ -78,11 +78,18 @@ def handleTripRequest():
     if request.method=='GET':
         userID = request.args.get('userID')
         print 'requested userID: '+request.args.get('userID')
+        print 'returning trips: '+`db.getTrips(userID)`
         return json.dumps(db.getTrips(userID))
     else:
         db.addTrip(session['userID'],request.json['name'])
         return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
-        
+
+@app.route('/trips/<tripID>',methods=['GET','POST'])
+def trip(tripID):
+    if 'user' in session:
+        if request.method=='GET':
+            return render_template('trip.html',userID=session['userID'],tripID=tripID)
+    
 # @app.route('/places',methods=['GET','POST'])
 # def handlePlaces():
 #     if request.method=='GET':
