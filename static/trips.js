@@ -37,6 +37,7 @@ App.TripsView = Marionette.CompositeView.extend({
     childViewContainer : 'ul',
     modelEvents : {
 	'change' : function() {this.render();}
+	
     },
     events : {
 	'click #addtrip' : function(){
