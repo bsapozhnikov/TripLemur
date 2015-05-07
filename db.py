@@ -61,8 +61,10 @@ def addUser(username, pw):
         c.execute("INSERT INTO users VALUES ('%s','%s')" %(username,pw))
         conn.commit()
         print "added %s to users" % (username)
+        return True
     else:
         print "Username already taken. Please enter a different username"
+        return False
 
 '''add place into db
 still needs an existingPlace method to check if a the place is already in the db'''
@@ -102,7 +104,16 @@ def getUser(user):
         if some['username'] == user:
             some['oid']=userID
             return some
-    
+
+def getUserID(username):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    userID = -1
+    t = (username, )
+    for row in c.execute('SELECT oid FROM users WHERE username=?',t):
+        userID = row[0]
+    return userID
+        
 def getUsers():
     '''returns dictionary of users: 
     the key is the unique id
@@ -136,7 +147,7 @@ def addTrip(user, name):
 #     return trips
 
 def getTrips(userID):
-    'returns a list of trips'
+    'returns a collection of trips'
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
     t = (userID, )
