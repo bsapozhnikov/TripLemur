@@ -1,6 +1,8 @@
 console.log("Hello");
 
+var tripView,reserveView,placesView,infoView;
 var userID = parseInt($('#userID').val());
+var tripID = parseInt($('#tripID').val());
 var App = new Marionette.Application();
 
 App.addRegions({
@@ -11,16 +13,16 @@ App.addRegions({
 });
 
 App.on('start',function(){
-    var tripView = new App.PlacesView({collection:tripPlaces});
+    tripView = new App.PlacesView({collection:tripPlaces});
     App.tripProper.show(tripView);
     
-    var reserveView = new App.PlacesView({collection:reservePlaces});
+    reserveView = new App.PlacesView({collection:reservePlaces});
     App.reserve.show(reserveView);
     
-    var placesView = new App.PlacesPlacesView({collection:placesPlaces});
+    placesView = new App.NewPlacesView({collection:placesPlaces});
     App.places.show(placesView);
     
-    var infoView = new App.InfoView({model:p1});
+    infoView = new App.InfoView({model:p1});
     App.info.show(infoView);
 });
 
@@ -35,26 +37,37 @@ App.InfoView = Marionette.ItemView.extend({
     template: "#info-template"
 });
 
-App.PlacesView = Marionette.CompositeView.extend({
-    template: '#place-composite-template',
+App.PlacesView = Marionette.CollectionView.extend({
+    template: '#place-collection-template',
     childView: App.PlaceView,
     childViewContainer : 'ul',
-    modelEvents : {
+    collectionEvents : {
 	'change' : function() {this.render();}
     },
     events : {
+    },
+    addNode : function(n){
+	console.log(n);
+	return this.collection.add(n);
     }
 });
 
-App.PlacesPlacesView = App.PlacesView.extend({
+App.NewPlacesView = Marionette.CompositeView.extend({
+    template: '#place-composite-template',
+    childView: App.PlaceView,
+    childViewContainer: 'ul',
+    collectionEvents :{
+	'change' : function() {this.render();}
+    },
     events : {
 	'click #addplace' : function(){
 	    console.log('clicked button addplace');
 	    var n = $('#newplacename').val();
 	    if (n.length > 0){
-		var newP = new Place({name:n});
-		this.collection.add(newP);
+		var newP = new Place({name:n,tripID:tripID});
 		newP.save();
+		newP.set('id',this.collection.length+1);
+		this.collection.add(newP);
 		$('#newplacename').val('');
 	    }
 	}
@@ -69,7 +82,7 @@ var Places = Backbone.Collection.extend({
     model:Place,
     url: '/places',
     initialize: function(){
-	this.fetch({data: $.param({'userID':userID})},function(d){
+	this.fetch({data: $.param({'userID':userID, 'tripID':tripID, getType: arguments[0]})},function(d){
 	    console.log(d);
 	    this.render();
 	});
@@ -86,9 +99,9 @@ var p2 = new Place({
     about: "this is also a place"
 });
 
-var placesPlaces = new Places([p1,p2]);
-var reservePlaces = new Places([]);
-var tripPlaces = new Places([]);
+var placesPlaces = new Places('notDoneYet');
+var reservePlaces = new Places('reserveNodes');
+var tripPlaces = new Places('notDoneYet');
 
 App.start();
 
