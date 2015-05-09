@@ -31,7 +31,7 @@ App.TripsView = Marionette.CompositeView.extend({
     template: '#trip-composite-template',
     childView: App.TripView,
     childViewContainer : 'ul',
-    modelEvents : {
+    collectionEvents : {
 	'change' : function() {this.render();}
 	
     },
@@ -41,8 +41,10 @@ App.TripsView = Marionette.CompositeView.extend({
 	    var n = $('#newtripname').val();
 	    if (n.length > 0){
 		var newT = new Trip({name:n});
-		this.collection.add(newT);
 		newT.save();
+		newT.set('id',this.collection.length+1);
+		this.collection.add(newT);
+
 		$('#newtripname').val('');
 	    }
 	}

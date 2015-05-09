@@ -8,7 +8,11 @@
   </head>
 
   <body>
-    <input type="hidden" name="userID" id="userID" value="{{userID|safe}}" />
+      <input type="hidden" name="userID" id="userID" value="{{userID|safe}}" />
+      <input type="hidden" name="tripID" id="tripID" value="{{tripID|safe}}" />
+      <script type="text/template" id="place-collection-template">
+	  <ul></ul>
+      </script>
     <script type="text/template" id="place-composite-template">
       <ul>
       </ul>

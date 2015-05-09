@@ -84,12 +84,24 @@ def handleTripRequest():
         db.addTrip(session['userID'],request.json['name'])
         return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
 
-@app.route('/trips/<tripID>',methods=['GET','POST'])
+@app.route('/trip/<tripID>',methods=['GET','POST'])
 def trip(tripID):
     if 'user' in session:
         if request.method=='GET':
             return render_template('trip.html',userID=session['userID'],tripID=tripID)
-    
+
+@app.route('/places',methods=['GET','POST'])
+def handlePlaceRequest():
+    if request.method=='GET':
+        if request.args.get('getType')=='reserveNodes':
+            return json.dumps(db.getReserveNodes(request.args.get('tripID')))
+        ## NOT FINISHED
+        else:
+            return json.dumps([])
+    else:
+        db.addNode(request.json['tripID'],request.json['name'])
+        return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
+        
 # @app.route('/places',methods=['GET','POST'])
 # def handlePlaces():
 #     if request.method=='GET':
@@ -99,6 +111,7 @@ def trip(tripID):
 #     else:
 #         db.addTrip(session['userID'],request.json['name'])
 #         return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
+
 if __name__ == '__main__':
     app.debug=True
     app.run()
