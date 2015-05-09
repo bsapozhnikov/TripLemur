@@ -24,6 +24,13 @@ App.on('start',function(){
     
     infoView = new App.InfoView({model:p1});
     App.info.show(infoView);
+
+    $('.connectedSortable').sortable({
+	connectWith: '.connectedSortable',
+	change: function(event, ui){
+	    console.log(ui);
+	}
+    }).disableSelection();
 });
 
 App.vent.on('click #addplace', function(){
@@ -41,6 +48,8 @@ App.vent.on('click #addplace', function(){
 
 App.PlaceView = Marionette.ItemView.extend({
     template: "#place-template",
+    tagName : 'li',
+    className : 'place',
     events :{
 	'mouseover' : function(){console.log('click');}
     }
@@ -54,6 +63,8 @@ App.PlacesView = Marionette.CollectionView.extend({
     template: '#place-collection-template',
     childView: App.PlaceView,
     childViewContainer : 'ul',
+    tagName : 'ul',
+    className: 'connectedSortable',
     initialize : function(){
 	this.listenTo(App.places);
     },
