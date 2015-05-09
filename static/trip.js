@@ -24,10 +24,32 @@ App.on('start',function(){
     
     infoView = new App.InfoView({model:p1});
     App.info.show(infoView);
+
+    $('.connectedSortable').sortable({
+	connectWith: '.connectedSortable',
+	change: function(event, ui){
+	    console.log(ui);
+	}
+    }).disableSelection();
+});
+
+App.vent.on('click #addplace', function(){
+    console.log('clicked button addplace');
+    var n = $('#newplacename').val();
+    if (n.length > 0){
+	var newP = new Place({name:n,tripID:tripID});
+	newP.save();
+	newP.set('id',reserveView.collection.length+1);
+	//this.collection.add(newP);
+	reserveView.collection.add(newP);
+	$('#newplacename').val('');
+    }
 });
 
 App.PlaceView = Marionette.ItemView.extend({
     template: "#place-template",
+    tagName : 'li',
+    className : 'place',
     events :{
 	'mouseover' : function(){console.log('click');}
     }
@@ -41,14 +63,15 @@ App.PlacesView = Marionette.CollectionView.extend({
     template: '#place-collection-template',
     childView: App.PlaceView,
     childViewContainer : 'ul',
+    tagName : 'ul',
+    className: 'connectedSortable',
+    initialize : function(){
+	this.listenTo(App.places);
+    },
     collectionEvents : {
 	'change' : function() {this.render();}
     },
     events : {
-    },
-    addNode : function(n){
-	console.log(n);
-	return this.collection.add(n);
     }
 });
 
@@ -61,15 +84,7 @@ App.NewPlacesView = Marionette.CompositeView.extend({
     },
     events : {
 	'click #addplace' : function(){
-	    console.log('clicked button addplace');
-	    var n = $('#newplacename').val();
-	    if (n.length > 0){
-		var newP = new Place({name:n,tripID:tripID});
-		newP.save();
-		newP.set('id',this.collection.length+1);
-		this.collection.add(newP);
-		$('#newplacename').val('');
-	    }
+	    App.vent.trigger('click #addplace');
 	}
 
     }
