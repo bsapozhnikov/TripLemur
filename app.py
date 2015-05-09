@@ -14,8 +14,11 @@ def unescape(s):
 ## JUST FOR NOW ##
 @app.route('/')
 def root():
-    return redirect('/login')
-
+    if 'user' in session:
+        return redirect('/home')
+    else:
+        return redirect('/login')
+        
 @app.route('/login',methods=['GET','POST'])
 def login():
     if 'user' in session:
