@@ -16,10 +16,10 @@ App.on('start',function(){
     tripView = new App.PlacesView({collection:tripPlaces});
     App.tripProper.show(tripView);
     
-    reserveView = new App.PlacesView({collection:reservePlaces});
+    reserveView = new App.NewPlacesView({collection:reservePlaces});
     App.reserve.show(reserveView);
     
-    placesView = new App.NewPlacesView({collection:placesPlaces});
+    placesView = new App.PlacesView({collection:placesPlaces});
     App.places.show(placesView);
     
     infoView = new App.InfoView({model:p1});
@@ -34,16 +34,7 @@ App.on('start',function(){
 });
 
 App.vent.on('click #addplace', function(){
-    console.log('clicked button addplace');
-    var n = $('#newplacename').val();
-    if (n.length > 0){
-	var newP = new Place({name:n,tripID:tripID});
-	newP.save();
-	newP.set('id',reserveView.collection.length+1);
-	//this.collection.add(newP);
-	reserveView.collection.add(newP);
-	$('#newplacename').val('');
-    }
+    
 });
 
 App.PlaceView = Marionette.ItemView.extend({
@@ -84,7 +75,16 @@ App.NewPlacesView = Marionette.CompositeView.extend({
     },
     events : {
 	'click #addplace' : function(){
-	    App.vent.trigger('click #addplace');
+	    console.log('clicked button addplace');
+	    var n = $('#newplacename').val();
+	    if (n.length > 0){
+		var newP = new Place({name:n,tripID:tripID});
+		newP.save();
+		newP.set('id',reserveView.collection.length+1);
+		this.collection.add(newP);
+		//reserveView.collection.add(newP);
+		$('#newplacename').val('');
+	    }
 	}
 
     }
