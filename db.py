@@ -169,7 +169,7 @@ def getTrip(userID,name):
         trip['name']=row[2]
     print 'trip for user with id %s and name %s'%(userID,name) + `trip`
     return trip
-    
+
 def addNode(tripID, name, position=-1):
     conn=sqlite3.connect('data.db')
     c = conn.cursor()
@@ -188,6 +188,16 @@ def getNodes(tripID):
     print "nodes for trip with id "+`tripID`+": "+`nodes`
     return nodes
 
+def getReserveNodes(tripID):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (tripID, )
+    nodes = []
+    for row in c.execute("SELECT rowid,* FROM nodes WHERE tripID=? AND position=-1", t):
+        nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3]})
+    print "reserve nodes for trip with id "+`tripID`+": "+`nodes`
+    return nodes
+    
 def addLink(startID, endID):
     conn=sqlite3.connect('data.db')
     c = conn.cursor()

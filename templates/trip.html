@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="../static/lib/jquery.js"></script>
+      <script src="../static/lib/jquery.js"></script>
+      <script src="../static/lib/jquery-ui.js"></script>
     <script src="../static/lib/lodash.js"></script>
     <script src="../static/lib/backbone.js"></script>
     <script src="../static/lib/backbone.marionette.js"></script>
   </head>
 
   <body>
-    <input type="hidden" name="userID" id="userID" value="{{userID|safe}}" />
+      <input type="hidden" name="userID" id="userID" value="{{userID|safe}}" />
+      <input type="hidden" name="tripID" id="tripID" value="{{tripID|safe}}" />
+      <script type="text/template" id="place-collection-template">
+	  <ul class="connectedSortable"></ul>
+      </script>
     <script type="text/template" id="place-composite-template">
-      <ul>
-      </ul>
+      <ul class="connectedSortable">
+      </ul><br>
       New Place: <input type="text" id="newplacename">
       <button id="addplace">Add</button>
     </script>
     <script type="text/template" id="place-template">
-      <div class="place">
-	<li><%- name%></li>
-      </div>
+	<%- name%>
     </script>
     
     <script type="text/template" id="info-template">
