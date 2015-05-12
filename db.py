@@ -26,7 +26,7 @@ def createTables():
     createTable('users', [('username','text'),('pw','text')]) ##not sure what else needs to go here
     createTable('trips', [('user', 'text'), ('name', 'text')])
     createTable('nodes', [('tripID', 'integer'), ('name', 'text'),
-                          ('position', "integer")])
+                          ('position', "integer"), ('list', 'integer')])
     createTable('links', [("startID", "integer"), ("endID", "integer")])
 
 def dropTables():
@@ -170,11 +170,12 @@ def getTrip(userID,name):
     print 'trip for user with id %s and name %s'%(userID,name) + `trip`
     return trip
 
-def addNode(tripID, name, position=-1):
+def addNode(tripID, name, trip=1):
     conn=sqlite3.connect('data.db')
     c = conn.cursor()
-    t = (tripID, name, position)
-    c.execute("INSERT INTO nodes VALUES (?,?,?)", t)
+    position = c.execute("SELECT last_insert_rowid()")+1
+    t = (tripID, name, position, trip)
+    c.execute("INSERT INTO nodes VALUES (?,?,?,?)", t)
     conn.commit()
     print "added %s to trip %s's nodes" %(name, tripID)
 
@@ -184,17 +185,28 @@ def getNodes(tripID):
     t = (tripID, )
     nodes = []
     for row in c.execute("SELECT rowid,* FROM nodes WHERE tripID=?", t):
-        nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3]})
+        nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3],"trip":row[4]})
     print "nodes for trip with id "+`tripID`+": "+`nodes`
     return nodes
+
+def updateNodeTrip(tripID, name, newtrip):
+    if (newtrip == 1 or newtrip == 0):
+        conn = sqlite3.connect('data.db')
+        c = conn.cursor()
+        c.execute("UPDATE nodes SET trip = ? WHERE tripID = ? and name = ?", (newtrip,tripID,name)))
+        conn.commit()
+        print "updated trip for "+`name`+" from tripID = "+`tripID`+" to "+`newtrip`
+    else:
+        print "invalid input, newtrip must be 0 or 1"
+    
 
 def getReserveNodes(tripID):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
     t = (tripID, )
     nodes = []
-    for row in c.execute("SELECT rowid,* FROM nodes WHERE tripID=? AND position=-1", t):
-        nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3]})
+    for row in c.execute("SELECT rowid,* FROM nodes WHERE tripID=? AND trip=1", t):
+        nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3],"trip":row[4]})
     print "reserve nodes for trip with id "+`tripID`+": "+`nodes`
     return nodes
     
