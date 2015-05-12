@@ -171,7 +171,8 @@ def getTrip(userID,name):
     return trip
 
 def addNode(tripID, name, li=1):
-    position = -1
+    position = 0
+    oid = 0
     conn=sqlite3.connect('data.db')
     c = conn.cursor()
     c.execute("SELECT last_insert_rowid()")
@@ -179,8 +180,9 @@ def addNode(tripID, name, li=1):
     R = (tripID, )
     c.execute("INSERT INTO nodes VALUES (?,?,?,?)", t)
     for row in c.execute("SELECT rowid,* FROM nodes WHERE tripID=?", R):
-        position = row[0]
-    P = (position, position)
+        position = position + 1
+        oid = row[0]
+    P = (position, oid)
     print P
     c.execute("UPDATE nodes SET position = ? WHERE oid = ?", P)
     conn.commit()
@@ -201,6 +203,8 @@ def updateNodeList(tripID, name, newlist):
         conn = sqlite3.connect('data.db')
         c = conn.cursor()
         c.execute("UPDATE nodes SET list = ? WHERE tripID = ? and name = ?", (newlist,tripID,name))
+        ##FIGURE OUT WHAT TO DO ABOUT DUPLICATE NAMES AT SOME POINT
+        ##MAYBE USE OID FOR THE NODE? BUT THATS COMPLICATED IDEK MAN WE WILL SEE
         conn.commit()
         print "updated trip for "+`name`+" from tripID = "+`tripID`+" to "+`newlist`
     else:
