@@ -12,6 +12,16 @@ App.addRegions({
     info: "#info"
 });
 
+var resetSortable = function(){
+    $('.connectedSortable').sortable({
+	connectWith: '.connectedSortable',
+	stop: function(event, ui){
+	    ui.item.trigger('drop',ui.item.index());
+	    console.log(reservePlaces);
+	}
+    }).disableSelection();
+};
+
 App.on('start',function(){
     tripView = new App.PlacesView({collection:tripPlaces});
     App.tripProper.show(tripView);
@@ -24,13 +34,7 @@ App.on('start',function(){
     
     infoView = new App.InfoView({model:p1});
     App.info.show(infoView);
-
-    $('.connectedSortable').sortable({
-	connectWith: '.connectedSortable',
-	change: function(event, ui){
-	    console.log(ui);
-	}
-    }).disableSelection();
+    resetSortable();
 });
 
 App.vent.on('click #addplace', function(){
@@ -42,7 +46,11 @@ App.PlaceView = Marionette.ItemView.extend({
     tagName : 'li',
     className : 'place',
     events :{
-	'mouseover' : function(){console.log('click');}
+	'mouseover' : function(){console.log('click');},
+	'drop':'drop'
+    },
+    drop: function(event, index){
+	this.$el.trigger('update-sort',[this.model,index]);
     }
 });
 
@@ -85,8 +93,23 @@ App.NewPlacesView = Marionette.CompositeView.extend({
 		//reserveView.collection.add(newP);
 		$('#newplacename').val('');
 	    }
-	}
+	},
+	'update-sort':'updateSort'
+    },
+    updateSort: function(event,model,position){
+	this.collection.remove(model);
+	this.collection.each(function (model,index){
+	    var ordinal = index;
+	    if(index>=position){
+		ordinal+=1;
+	    }
+	    model.set('ordinal',ordinal);
+	});
 
+	model.set('ordinal',position);
+	this.collection.add(model, {at: position});
+
+	resetSortable();
     }
 });
 
@@ -101,6 +124,9 @@ var Places = Backbone.Collection.extend({
 	    console.log(d);
 	    this.render();
 	});
+    },
+    comparator: function(model){
+	return model.get('ordinal');
     }
 });
 
