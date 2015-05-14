@@ -101,8 +101,9 @@ def handlePlaceRequest():
         else:
             return json.dumps([])
     else:
-        db.addNode(request.json['tripID'],request.json['name'])
-        return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
+        return `db.addNode(request.json['tripID'],request.json['name'])`
+    ##db.addNode(request.json['tripID'],request.json['name'])
+    ##return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
         
 # @app.route('/places',methods=['GET','POST'])
 # def handlePlaces():
