@@ -188,6 +188,7 @@ def addNode(tripID, name, li=1):
     c.execute("UPDATE nodes SET position = ? WHERE oid = ?", P)
     conn.commit()
     print "added %s to trip %s's nodes" %(name, tripID)
+    return oid
 
 def getNodes(tripID):
     conn = sqlite3.connect('data.db')

@@ -86,13 +86,15 @@ App.NewPlacesView = Marionette.CompositeView.extend({
 	'click #addplace' : function(){
 	    console.log('clicked button addplace');
 	    var n = $('#newplacename').val();
+	    var that = this;
 	    if (n.length > 0){
 		var newP = new Place({name:n,tripID:tripID});
-		newP.save();
-		newP.set('id',reserveView.collection.length+1);
-		this.collection.add(newP);
-		//reserveView.collection.add(newP);
-		$('#newplacename').val('');
+		newP.save(null,{error: function(){console.log('errorr');},
+				success: function(d,r){
+				    newP.set('id',r);
+				    that.collection.add(newP);
+				    $('#newplacename').val('');	    
+				}});
 	    }
 	},
 	'update-sort':'updateSort'
