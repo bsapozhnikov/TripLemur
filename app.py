@@ -84,8 +84,7 @@ def handleTripRequest():
         print 'returning trips: '+`db.getTrips(userID)`
         return json.dumps(db.getTrips(userID))
     else:
-        db.addTrip(session['userID'],request.json['name'])
-        return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
+        return `db.addTrip(session['userID'],request.json['name'])['id']`
 
 @app.route('/trip/<tripID>',methods=['GET','POST'])
 def trip(tripID):

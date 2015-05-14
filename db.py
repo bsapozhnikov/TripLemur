@@ -134,6 +134,7 @@ def addTrip(user, name):
     c.execute("INSERT INTO trips VALUES (?,?)", t)
     conn.commit()
     print "added %s to %s's trips" %(name, user)
+    return getTrip(user,name)
 
 
 # def getTrips():

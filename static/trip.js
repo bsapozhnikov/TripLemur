@@ -18,6 +18,7 @@ var resetSortable = function(){
 	stop: function(event, ui){
 	    ui.item.trigger('drop',ui.item.index());
 	    console.log(reservePlaces);
+	    //App.reserve.currentView.collection.save();
 	}
     }).disableSelection();
 };
