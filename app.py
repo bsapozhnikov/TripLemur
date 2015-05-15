@@ -104,7 +104,12 @@ def handlePlaceRequest():
         return `db.addNode(request.json['tripID'],request.json['name'])`
     ##db.addNode(request.json['tripID'],request.json['name'])
     ##return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
-        
+
+@app.route('/places/<nodeID>',methods=['PUT'])
+def handleUpdatePlaceRequest(nodeID):
+    print nodeID
+    print request.json
+    
 # @app.route('/places',methods=['GET','POST'])
 # def handlePlaces():
 #     if request.method=='GET':

@@ -18,15 +18,17 @@ var resetSortable = function(){
 	stop: function(event, ui){
 	    ui.item.trigger('drop',ui.item.index());
 	    console.log(reservePlaces);
-	    //for each model in collection, save model and print to console
-	    this.reservePlaces.each(function(Place) {
+	    _.map(reservePlaces.models, function(n, index) {
+		n.set({position: index + 1});
+
+	    });
+	    console.log(reservePlaces);
+	    console.log(App.reserve.currentView.collection);
+	    console.log(this);
+	    App.reserve.currentView.collection.each(function(Place) {
 		Place.save();
 		console.log(Place);
-		})
-	   /* _.forEach(reservePlaces, function(n,key) {
-		key.save();
-		console.log(n);
-	    })*/
+	    })
 	}				
     }).disableSelection();
 };
