@@ -93,8 +93,11 @@ def trip(tripID):
         if request.method=='GET':
             return render_template('trip.html',userID=session['userID'],tripID=tripID)
 
-@app.route('/places',methods=['GET','POST'])
+@app.route('/places',methods=['GET','POST', 'PUT'])
 def handlePlaceRequest():
+   # if request.method == "PUT":
+        #stuff happens
+     #   print "bang"
     if request.method=='GET':
         if request.args.get('getType')=='reserveNodes':
             return json.dumps(db.getReserveNodes(request.args.get('tripID')))
