@@ -39,13 +39,15 @@ App.TripsView = Marionette.CompositeView.extend({
 	'click #addtrip' : function(){
 	    console.log('clicked button addtrip');
 	    var n = $('#newtripname').val();
+	    var that = this;
 	    if (n.length > 0){
 		var newT = new Trip({name:n});
-		newT.save();
-		newT.set('id',this.collection.length+1);
-		this.collection.add(newT);
-
-		$('#newtripname').val('');
+		newT.save(null,{error: function(){console.log('errror');},
+				success: function(d,r){
+				    newT.set('id',r);
+				    that.collection.add(newT);
+				    $('#newtripname').val('');
+				}});
 	    }
 	}
     }

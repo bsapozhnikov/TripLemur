@@ -134,6 +134,7 @@ def addTrip(user, name):
     c.execute("INSERT INTO trips VALUES (?,?)", t)
     conn.commit()
     print "added %s to %s's trips" %(name, user)
+    return getTrip(user,name)
 
 
 # def getTrips():
@@ -187,6 +188,7 @@ def addNode(tripID, name, li=1):
     c.execute("UPDATE nodes SET position = ? WHERE oid = ?", P)
     conn.commit()
     print "added %s to trip %s's nodes" %(name, tripID)
+    return oid
 
 def getNodes(tripID):
     conn = sqlite3.connect('data.db')

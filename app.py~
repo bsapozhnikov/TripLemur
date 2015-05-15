@@ -14,11 +14,8 @@ def unescape(s):
 ## JUST FOR NOW ##
 @app.route('/')
 def root():
-    if 'user' in session:
-        return redirect('/home')
-    else:
-        return redirect('/login')
-        
+    return redirect('/login')
+
 @app.route('/login',methods=['GET','POST'])
 def login():
     if 'user' in session:
@@ -81,38 +78,11 @@ def handleTripRequest():
     if request.method=='GET':
         userID = request.args.get('userID')
         print 'requested userID: '+request.args.get('userID')
-        print 'returning trips: '+`db.getTrips(userID)`
         return json.dumps(db.getTrips(userID))
     else:
-        return `db.addTrip(session['userID'],request.json['name'])['id']`
-
-@app.route('/trip/<tripID>',methods=['GET','POST'])
-def trip(tripID):
-    if 'user' in session:
-        if request.method=='GET':
-            return render_template('trip.html',userID=session['userID'],tripID=tripID)
-
-@app.route('/places',methods=['GET','POST', 'PUT'])
-def handlePlaceRequest():
-   # if request.method == "PUT":
-        #stuff happens
-     #   print "bang"
-    if request.method=='GET':
-        if request.args.get('getType')=='reserveNodes':
-            return json.dumps(db.getReserveNodes(request.args.get('tripID')))
-        ## NOT FINISHED
-        else:
-            return json.dumps([])
-    else:
-        return `db.addNode(request.json['tripID'],request.json['name'])`
-    ##db.addNode(request.json['tripID'],request.json['name'])
-    ##return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
-
-@app.route('/places/<nodeID>',methods=['PUT'])
-def handleUpdatePlaceRequest(nodeID):
-    print nodeID
-    print request.json
-    
+        db.addTrip(session['userID'],request.json['name'])
+        return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
+        
 # @app.route('/places',methods=['GET','POST'])
 # def handlePlaces():
 #     if request.method=='GET':
@@ -122,7 +92,6 @@ def handleUpdatePlaceRequest(nodeID):
 #     else:
 #         db.addTrip(session['userID'],request.json['name'])
 #         return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
-
 if __name__ == '__main__':
     app.debug=True
     app.run()

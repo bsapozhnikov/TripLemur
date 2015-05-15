@@ -22,6 +22,15 @@ Maria and Natan will be focusing on frontend (html, css, Marionette, etc.)
 + (5/11 - 5/17) T-MINUS 2 WEEKS: Suggested nodes list
 + (5/18 - 5/25) T-MINUS 1 WEEK: Finish up, styling, tweaking, and cleaning-up code
 
+## Completed ##
+
++ login mechanism
++ trips page to show user's trips, and input field to add new trips
++ Currently Working On: Individual trip page
+   + input to make new nodes (unordered)
+   + nodes are sortable (but not on the back end yet)
+
+
 
 
 
