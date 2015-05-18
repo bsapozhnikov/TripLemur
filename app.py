@@ -112,9 +112,13 @@ def handlePlaceRequest():
 def handleUpdatePlaceRequest(nodeID):
     #get new position of node from request.json["position"]
     #update position of node from data.db to new position (see above)
+    L = request.json
+    print "\n\n\n\n\n\n\n\n\n\n"
     print nodeID
-    print request.json
-    return True
+    print L
+    print "\n\n\n\n\n\n\n\n\n\n\n\n"
+    db.changePosition(nodeID, L["position"])
+    return "true"
     
 # @app.route('/places',methods=['GET','POST'])
 # def handlePlaces():

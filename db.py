@@ -222,6 +222,15 @@ def getReserveNodes(tripID):
         nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3],"list":row[4]})
     print "reserve nodes for trip with id "+`tripID`+": "+`nodes`
     return nodes
+
+def changePosition(node, newPos):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (newPos, node)
+    c.execute("UPDATE nodes SET position = ? WHERE oid = ?", t)
+    conn.commit()
+   # print "changed node "+node+" position to "+newPos
+    return True
     
 def addLink(startID, endID):
     conn=sqlite3.connect('data.db')
