@@ -19,12 +19,20 @@ App.on('start',function(){
 App.TripView = Marionette.ItemView.extend({
     template: "#trip-template",
     events :{
-	'mouseover' : function(){console.log('click');}
+	'mouseover' : function(){
+	    console.log(this);
+	    var infoView = new App.InfoView({model:this.model});
+	    App.info.show(infoView);
+	    infoView.render();
+	}
     }
 });
 
 App.InfoView = Marionette.ItemView.extend({
-    template: "#info-template"
+    template: "#info-template",
+    events:{
+	'mouseover':function(){console.log(this);}
+    }
 });
 
 App.TripsView = Marionette.CompositeView.extend({
@@ -41,7 +49,7 @@ App.TripsView = Marionette.CompositeView.extend({
 	    var n = $('#newtripname').val();
 	    var that = this;
 	    if (n.length > 0){
-		var newT = new Trip({name:n});
+		var newT = new Trip({name:n, about:""});
 		newT.save(null,{error: function(){console.log('errror');},
 				success: function(d,r){
 				    newT.set('id',r);
@@ -54,7 +62,11 @@ App.TripsView = Marionette.CompositeView.extend({
 });
 
 var Trip = Backbone.Model.extend({
-    urlRoot: '/trips'
+    urlRoot: '/trips',
+    initialize: function(){
+	console.log(arguments);
+	this.set("about","Info about trip");
+    }
 });
 var Trips = Backbone.Collection.extend({
     model:Trip,
