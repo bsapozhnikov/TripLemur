@@ -50,8 +50,6 @@ App.PlaceView = Marionette.ItemView.extend({
     events :{
 	'mouseover' : function(){
 	    console.log(this);
-//	    infoView = new App.InfoView({model:this.model});
-//	    App.info.show(infoView);
 	},
 	'drop':'drop'
     },
