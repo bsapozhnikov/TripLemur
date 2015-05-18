@@ -18,18 +18,8 @@ var resetSortable = function(){
 	stop: function(event, ui){
 	    ui.item.trigger('drop',ui.item.index());
 	    console.log(reservePlaces);
-	    _.map(reservePlaces.models, function(n, index) {
-		n.set({position: index + 1});
-
-	    });
-	    console.log(reservePlaces);
-	    console.log(App.reserve.currentView.collection);
-	    console.log(this);
-	    App.reserve.currentView.collection.each(function(Place) {
-		Place.save();
-		console.log(Place);
-	    })
-	}				
+	    //App.reserve.currentView.collection.save();
+	}
     }).disableSelection();
 };
 
@@ -45,7 +35,6 @@ App.on('start',function(){
     
     infoView = new App.InfoView({model:p1});
     App.info.show(infoView);
-    
     resetSortable();
 });
 
@@ -58,11 +47,7 @@ App.PlaceView = Marionette.ItemView.extend({
     tagName : 'li',
     className : 'place',
     events :{
-	'mouseover' : function(){
-	    console.log(this);
-//	    infoView = new App.InfoView({model:this.model});
-//	    App.info.show(infoView);
-	},
+	'mouseover' : function(){console.log('click');},
 	'drop':'drop'
     },
     drop: function(event, index){
