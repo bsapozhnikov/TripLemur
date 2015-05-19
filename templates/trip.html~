@@ -21,7 +21,7 @@
       <button id="addplace">Add</button>
     </script>
     <script type="text/template" id="place-template">
-	<%- name%>	
+	<%- name%>
     </script>
     
     <script type="text/template" id="info-template">
@@ -34,8 +34,7 @@
       <tr>
     	<td id="tripProper"></td>
     	<td id="reserve"></td>
-    	<!--<td id="places"></td>!-->
-	<td>  <%- name%> </td>
+    	<td id="places"></td>
     	<td id="info"></td>
       </tr>
     </table>

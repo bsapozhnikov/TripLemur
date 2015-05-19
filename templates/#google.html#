@@ -1,0 +1,4 @@
+<DOCTYPE HTML>
+<html>
+	"https://maps.googleapis.com/maps/api/place/textsearch/json?query=establishment+near+" + <%- name%> + "&key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo"
+</html>
