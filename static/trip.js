@@ -133,13 +133,19 @@ var Places = Backbone.Collection.extend({
     model:Place,
     url: '/places',
     initialize: function(){
-	this.fetch({data: $.param({'userID':userID, 'tripID':tripID, getType: arguments[0]})},function(d){
-	    console.log(d);
-	    this.render();
+	console.log('asddf');
+	this.fetch({
+	    data : $.param({'userID':userID, 'tripID':tripID, getType: arguments[0]}),
+	    success : function(d){
+		console.log(d.sort);
+		//d.models.render();
+	    }
 	});
+	console.log("fuck everything and you");
     },
     comparator: function(model){
 	return model.get('ordinal');
+
     }
 });
 
