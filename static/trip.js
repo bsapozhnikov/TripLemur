@@ -142,10 +142,26 @@ var Places = Backbone.Collection.extend({
 	this.fetch({
 	    data : $.param({'userID':userID, 'tripID':tripID, getType: arguments[0]}),
 	    success : function(d){
-		console.log(d.sort);
-		//d.models.render();
+	//	d.sort({comparator : function(m){
+	//	    return m.get("position");
+	//	}});
+	  //  }
+		a = _.sortBy(d.models,function(m){
+		  //  console.log(m.get("position"));
+		    return m.get("position");
+		});
+		console.log(a);
+		console.log(d.models);
+		d.models = a;
+		console.log(d.models);
+		App.reserve.currentView.render();
+		resetSortable();
 	    }
+	
 	});
+		//d.models.render();
+			
+	
 	console.log("fuck everything and you");
     },
     comparator: function(model){
