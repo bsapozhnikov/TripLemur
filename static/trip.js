@@ -181,7 +181,9 @@ var p2 = new Place({
     about: "this is also a place"
 });
 
-var placesPlaces = new Places('notDoneYet');
+//var placesJSON = https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Sydney&key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo
+var placesJSON = '[{ "id":"1","name":"some name","description":"hmmm"}]';
+var placesPlaces = new Places(placesJSON);
 var reservePlaces = new Places('reserveNodes');
 var tripPlaces = new Places('notDoneYet');
 
