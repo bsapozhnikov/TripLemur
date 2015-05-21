@@ -60,9 +60,10 @@ App.PlaceView = Marionette.ItemView.extend({
     events :{
 	'mouseover' : function(){
 	    console.log(this);
-//	    infoView = new App.InfoView({model:this.model});
-//	    App.info.show(infoView);
+	    infoView = new App.InfoView({model:this.model});
+	    App.info.show(infoView);
 	},
+	'mousedown' : resetSortable,
 	'drop':'drop'
     },
     drop: function(event, index){
