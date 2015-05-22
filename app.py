@@ -102,7 +102,7 @@ def handlePlaceRequest():
             return json.dumps(db.getReserveNodes(request.args.get('tripID')))
         ## NOT FINISHED
         else:
-            return json.dumps([])
+            return json.dumps(["https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Sydney&key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo"])
     else:
         return `db.addNode(request.json['tripID'],request.json['name'])`
     ##db.addNode(request.json['tripID'],request.json['name'])
