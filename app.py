@@ -117,7 +117,12 @@ def handleUpdatePlaceRequest(nodeID):
     print nodeID
     print L
     print "\n\n\n\n\n\n\n\n\n\n\n\n"
-    db.changePosition(nodeID, L["position"])
+    if db.getNode(nodeID)['position'] != L['position']:
+        print 'updating position'
+        db.changePosition(nodeID, L["position"])
+    else:
+        print 'updating info'
+        db.updateNodeInfo(L);
     return "true"
     
 # @app.route('/places',methods=['GET','POST'])

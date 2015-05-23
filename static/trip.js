@@ -15,6 +15,7 @@ App.addRegions({
 var resetSortable = function(){
     $('.connectedSortable').sortable({
 	connectWith: '.connectedSortable',
+	dropOnEmpty: true,
 	stop: function(event, ui){
 	    ui.item.trigger('drop',ui.item.index());
 	    console.log(reservePlaces);
@@ -28,7 +29,7 @@ var resetSortable = function(){
 	    App.reserve.currentView.collection.each(function(Place) {
 		Place.save();
 		console.log(Place);
-	    })
+	    });
 	}				
     }).disableSelection();
 };
@@ -72,7 +73,18 @@ App.PlaceView = Marionette.ItemView.extend({
 });
 
 App.InfoView = Marionette.ItemView.extend({
-    template: "#info-template"
+    template: "#info-template",
+    events : {
+	'click #placename' : function(){
+	    var name = $('#placename').replaceWith('<input type="text" id="editplacename" />');
+	    $('#editplacename').val(name.text()).focus();
+	},
+	'blur #editplacename' : function(){
+	    this.model.set('name',$('#editplacename').val()).save();
+	    console.log(this);
+	    
+	}
+    }
 });
 
 App.PlacesView = Marionette.CollectionView.extend({
