@@ -190,6 +190,15 @@ def addNode(tripID, name, li=1):
     print "added %s to trip %s's nodes" %(name, tripID)
     return oid
 
+def updateNodeInfo(node):
+    t = (node['name'],node['id'])
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    c.execute("UPDATE nodes SET name = ? WHERE oid = ?", t) 
+    conn.commit()
+    print "updated node info"
+    return True
+       
 def getNodes(tripID):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
@@ -212,7 +221,15 @@ def updateNodeList(tripID, name, newlist):
     else:
         print "invalid input, newlist must be 0 or 1"
     
-
+def getTripProperNodes(tripID):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (tripID, )
+    nodes = []
+    for row in c.execute("SELECT rowid,* FROM nodes WHERE tripID=? AND list=0", t):
+        nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3],"list":row[4]})
+    print "reserve nodes for trip with id "+`tripID`+": "+`nodes`
+    return nodes
 def getReserveNodes(tripID):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
@@ -223,6 +240,14 @@ def getReserveNodes(tripID):
     print "reserve nodes for trip with id "+`tripID`+": "+`nodes`
     return nodes
 
+def getNode(nodeID):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (nodeID, )
+    for row in c.execute("SELECT rowid,* FROM nodes WHERE rowid=?", t):
+        return {"id":row[0], "tripID":row[1], "name":row[2],"position":row[3],"list":row[4]}
+            
+    
 def changePosition(node, newPos):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()

@@ -100,6 +100,8 @@ def handlePlaceRequest():
     if request.method=='GET':
         if request.args.get('getType')=='reserveNodes':
             return json.dumps(db.getReserveNodes(request.args.get('tripID')))
+        elif request.args.get('getType')=='tripProperNodes':
+            return json.dumps(db.getTripProperNodes(request.args.get('tripID')))
         ## NOT FINISHED
         else:
             return json.dumps([])
@@ -113,11 +115,22 @@ def handleUpdatePlaceRequest(nodeID):
     #get new position of node from request.json["position"]
     #update position of node from data.db to new position (see above)
     L = request.json
-    print "\n\n\n\n\n\n\n\n\n\n"
+    node = db.getNode(nodeID)
     print nodeID
     print L
-    print "\n\n\n\n\n\n\n\n\n\n\n\n"
-    db.changePosition(nodeID, L["position"])
+    print node
+    changePosition = node['position'] != L['position']
+    changeList = node['list']!=L['list']
+    if changePosition or changeList:
+        if changePosition:
+            print 'updating position'
+            db.changePosition(nodeID, L["position"])
+        if changeList:
+            print 'updating list'
+            db.updateNodeList(node['tripID'],node['name'],L['list'])
+    else:
+        print 'updating info'
+        db.updateNodeInfo(L);
     return "true"
     
 # @app.route('/places',methods=['GET','POST'])
