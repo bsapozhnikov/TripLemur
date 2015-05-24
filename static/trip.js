@@ -11,25 +11,38 @@ App.addRegions({
     places: "#places",
     info: "#info"
 });
-
+var updateSortedModels = function(){
+    _.map(tripPlaces.models, function(n, index) {
+	n.set({position: index + 1, list: 0});
+    });
+    _.map(reservePlaces.models, function(n, index) {
+	n.set({position: index + 1, list: 1});
+    });
+    App.tripProper.currentView.collection.each(function(Place){
+	console.log(Place);
+	Place.save();
+    });
+    App.reserve.currentView.collection.each(function(Place) {
+	console.log(Place);
+	Place.save();
+    });
+};
 var resetSortable = function(){
     $('.connectedSortable').sortable({
 	connectWith: '.connectedSortable',
 	dropOnEmpty: true,
+	remove: function(event,ui){
+	    console.log(ui.item.index());
+	    console.log($(event.target));
+	    //$(event.target).trigger('kill',ui.item);
+	    ui.item.trigger('moveout',[event.target,ui.item.index()]);
+	},
 	stop: function(event, ui){
-	    ui.item.trigger('drop',ui.item.index());
-	    console.log(reservePlaces);
-	    _.map(reservePlaces.models, function(n, index) {
-		n.set({position: index + 1});
-
-	    });
-	    console.log(reservePlaces);
-	    console.log(App.reserve.currentView.collection);
-	    console.log(this);
-	    App.reserve.currentView.collection.each(function(Place) {
-		Place.save();
-		console.log(Place);
-	    });
+	    var sameList = ui.sender===null && ui.item.parent().is($(this));
+	    if(sameList){
+		ui.item.trigger('drop',ui.item.index());
+	    }
+	    updateSortedModels();
 	}				
     }).disableSelection();
 };
@@ -65,10 +78,16 @@ App.PlaceView = Marionette.ItemView.extend({
 	    App.info.show(infoView);
 	},
 	'mousedown' : resetSortable,
-	'drop':'drop'
+	'drop':'drop',
+	'moveout':'moveOut'
     },
     drop: function(event, index){
 	this.$el.trigger('update-sort',[this.model,index]);
+    },
+    moveOut: function(event,oldCollection,newPos){
+	this.$el.trigger('update-movein',[this.model,newPos]);
+	$(oldCollection).trigger('update-moveout',this.model);
+	//this.$el.trigger('update-moveout',this.model);
     }
 });
 
@@ -97,9 +116,47 @@ App.PlacesView = Marionette.CollectionView.extend({
 	this.listenTo(App.places);
     },
     collectionEvents : {
-	'change' : function() {this.render();}
+	'change' : function() {this.render();},
+	'add' : function(){
+	    this.collection.each(function(model,index){
+		model.set({'ordinal':index},{'silent':'true'});
+	    });
+	}
     },
     events : {
+	'update-sort':'updateSort',
+	'update-moveout':'updateMoveOut',
+	'update-movein':'updateMoveIn'
+    },
+    updateSort: function(event,model,position){
+	this.collection.remove(model);
+	this.collection.each(function (model,index){
+	    var ordinal = index;
+	    if(index>=position){
+		ordinal+=1;
+	    }
+	    model.set('ordinal',ordinal);
+	});
+
+	model.set('ordinal',position);
+	this.collection.add(model, {at: position});
+
+	resetSortable();
+    },
+    updateMoveOut: function(event,model){
+	console.log(model);
+	console.log(this.collection);
+	this.collection.remove(model);
+	this.collection.each(function(model,index){
+	    model.set('ordinal',index);
+	});
+    },
+    updateMoveIn: function(event, model, newPos){
+	console.log(model);
+	console.log(this);
+	this.collection.add(model, {at: newPos});
+	console.log(this.collection);
+
     }
 });
 
@@ -108,7 +165,12 @@ App.NewPlacesView = Marionette.CompositeView.extend({
     childView: App.PlaceView,
     childViewContainer: 'ul',
     collectionEvents :{
-	'change' : function() {this.render();}
+	'change' : function() {this.render();},
+	'add' : function(){
+	    this.collection.each(function(model,index){
+		model.set({'ordinal':index},{'silent':'true'});
+	    });
+	}
     },
     events : {
 	'click #addplace' : function(){
@@ -125,7 +187,9 @@ App.NewPlacesView = Marionette.CompositeView.extend({
 				}});
 	    }
 	},
-	'update-sort':'updateSort'
+	'update-sort':'updateSort',
+	'update-moveout':'updateMoveOut',
+	'update-movein':'updateMoveIn'
     },
     updateSort: function(event,model,position){
 	this.collection.remove(model);
@@ -136,11 +200,24 @@ App.NewPlacesView = Marionette.CompositeView.extend({
 	    }
 	    model.set('ordinal',ordinal);
 	});
-
 	model.set('ordinal',position);
 	this.collection.add(model, {at: position});
 
 	resetSortable();
+    },
+    updateMoveOut: function(event,model){
+	console.log(model);
+	console.log(this.collection);
+	this.collection.remove(model);
+	console.log(this.collection);
+	this.collection.each(function(model,index){
+	    console.log(index);
+	    console.log(model);
+	    model.set('ordinal',index);
+	});
+    },
+    updateMoveIn: function(event, model, newPos){
+	this.collection.add(model,{at: newPos});
     }
 });
 
@@ -195,7 +272,7 @@ var p2 = new Place({
 
 var placesPlaces = new Places('notDoneYet');
 var reservePlaces = new Places('reserveNodes');
-var tripPlaces = new Places('notDoneYet');
+var tripPlaces = new Places('tripProperNodes');
 
 App.start();
 

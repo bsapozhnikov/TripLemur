@@ -221,7 +221,15 @@ def updateNodeList(tripID, name, newlist):
     else:
         print "invalid input, newlist must be 0 or 1"
     
-
+def getTripProperNodes(tripID):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (tripID, )
+    nodes = []
+    for row in c.execute("SELECT rowid,* FROM nodes WHERE tripID=? AND list=0", t):
+        nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3],"list":row[4]})
+    print "reserve nodes for trip with id "+`tripID`+": "+`nodes`
+    return nodes
 def getReserveNodes(tripID):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
