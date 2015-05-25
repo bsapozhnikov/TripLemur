@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, render_template, session, flash
-import db, cgi, json
+import db, cgi, json, urllib
 
 app = Flask(__name__)
 app.secret_key = 'insert_clever_secret_here'
@@ -101,8 +101,15 @@ def handlePlaceRequest():
         if request.args.get('getType')=='reserveNodes':
             return json.dumps(db.getReserveNodes(request.args.get('tripID')))
         ## NOT FINISHED
-        else:
-            return json.dumps(["https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Sydney&key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo"])
+        else :
+        ##need to substitue in general tripid and userid stuff 
+            url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+" + db.getTripName(1,1) + "&key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo"
+            response = urllib.urlopen(url)
+            restaurants = json.loads(response.read())
+            print "****** \n ******** \n RESTAURANTS:"
+            for restaurant in restaurants["results"]:
+                 print restaurant["name"]  
+            return restaurants["results"]
     else:
         return `db.addNode(request.json['tripID'],request.json['name'])`
     ##db.addNode(request.json['tripID'],request.json['name'])
