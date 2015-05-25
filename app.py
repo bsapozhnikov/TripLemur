@@ -92,14 +92,17 @@ def trip(tripID):
         if request.method=='GET':
             return render_template('trip.html',userID=session['userID'],tripID=tripID)
 
-@app.route('/places',methods=['GET','POST'])
+@app.route('/places',methods=['GET','POST', 'PUT'])
 def handlePlaceRequest():
+   # if request.method == "PUT":
+        #stuff happens
+     #   print "bang"
     if request.method=='GET':
         if request.args.get('getType')=='reserveNodes':
             return json.dumps(db.getReserveNodes(request.args.get('tripID')))
         ## NOT FINISHED
         else:
-            return json.dumps([])
+            return json.dumps(["https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Sydney&key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo"])
     else:
         return `db.addNode(request.json['tripID'],request.json['name'])`
     ##db.addNode(request.json['tripID'],request.json['name'])
@@ -107,8 +110,15 @@ def handlePlaceRequest():
 
 @app.route('/places/<nodeID>',methods=['PUT'])
 def handleUpdatePlaceRequest(nodeID):
+    #get new position of node from request.json["position"]
+    #update position of node from data.db to new position (see above)
+    L = request.json
+    print "\n\n\n\n\n\n\n\n\n\n"
     print nodeID
-    print request.json
+    print L
+    print "\n\n\n\n\n\n\n\n\n\n\n\n"
+    db.changePosition(nodeID, L["position"])
+    return "true"
     
 # @app.route('/places',methods=['GET','POST'])
 # def handlePlaces():
