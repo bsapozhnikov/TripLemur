@@ -244,6 +244,7 @@ var Places = Backbone.Collection.extend({
 		console.log(d.models);
 		d.models = a;
 		console.log(d.models);
+		App.tripProper.currentView.render();
 		App.reserve.currentView.render();
 		resetSortable();
 	    }
