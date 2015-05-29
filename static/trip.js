@@ -1,6 +1,6 @@
 console.log("Hello");
 
-var tripView,reserveView,placesView,infoView;
+var tripView,reserveView,placesView,infoView,trashView;
 var userID = parseInt($('#userID').val());
 var tripID = parseInt($('#tripID').val());
 var App = new Marionette.Application();
@@ -9,7 +9,8 @@ App.addRegions({
     tripProper: "#tripProper",
     reserve: "#reserve",
     places: "#places",
-    info: "#info"
+    info: "#info",
+    trash: "#trash"
 });
 var updateSortedModels = function(){
     _.map(tripPlaces.models, function(n, index) {
@@ -60,6 +61,9 @@ App.on('start',function(){
     infoView = new App.InfoView({model:p1});
     App.info.show(infoView);
     
+    trashView = new App.InfoView({});
+    App.trash.show(trashView);
+        
     resetSortable();
 });
 
@@ -104,6 +108,10 @@ App.InfoView = Marionette.ItemView.extend({
 	    
 	}
     }
+});
+
+App.TrashView = Marionette.ItemView.extend({
+    template: "#trash-template"
 });
 
 App.PlacesView = Marionette.CollectionView.extend({
