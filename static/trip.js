@@ -61,7 +61,7 @@ App.on('start',function(){
     infoView = new App.InfoView({model:p1});
     App.info.show(infoView);
     
-    trashView = new App.InfoView({});
+    trashView = new App.TrashView({});
     App.trash.show(trashView);
         
     resetSortable();
@@ -110,8 +110,19 @@ App.InfoView = Marionette.ItemView.extend({
     }
 });
 
-App.TrashView = Marionette.ItemView.extend({
-    template: "#trash-template"
+App.TrashView = Marionette.CompositeView.extend({
+    template: "#trash-template",
+    childView: App.PlaceView,
+    childViewContainer : 'ul',
+    tagName: 'ul',
+    className: 'connectedSortable',
+    events : {
+	'update-movein':'updateMoveIn'
+    },
+    updateMoveIn: function(event,model,newPos){
+	console.log(model);
+	model.destroy();
+    }
 });
 
 App.PlacesView = Marionette.CollectionView.extend({
