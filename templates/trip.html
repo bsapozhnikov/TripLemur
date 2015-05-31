@@ -28,13 +28,21 @@
     <script type="text/template" id="info-template">
 	<div id="placename"><h4><%- name%></h4></div>
     </script>
+    <script type="text/template" id="trash-template">
+	Trash
+	<ul class="connectedSortable">
+	</ul>
+    </script>
 
     <!-- <table border="1px"><tr><th>Trip Proper</th><th>Reserve</th><th>Places</th><th>Info</th></tr> -->
     <!--   <tr> -->
-    	<div id="tripProper" class="tripList"></div>
-    	<div id="reserve" class="tripList"></div>
-    	<div id="places" class="tripList"></div>
-    	<div id="info" class="tripList"></div>
+    	<div id="tripProper" class="tripList bordered"></div>
+    	<div id="reserve" class="tripList bordered"></div>
+    	<div id="places" class="tripList bordered"></div>
+    	<div class="tripList">
+	    <div id="info" class="bordered"></div>
+	    <div id="trash" class="bordered"></div>
+	</div>
      <!--  </tr> -->
     <!-- </table> -->
 

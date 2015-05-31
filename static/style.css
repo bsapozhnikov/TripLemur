@@ -14,11 +14,16 @@ ul{
     height: 100px; /* needs to be some absolute number of pixels */
 }
 
-div.tripList{
+div.bordered{
     border: 5px solid fuchsia;
+}
+div.tripList{
     float: left;
     height: 95vh;
     width: 23%;
+}
+div#info, div#trash{
+    height: 48.9%;    
 }
 
 li{

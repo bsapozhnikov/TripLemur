@@ -246,8 +246,15 @@ def getNode(nodeID):
     t = (nodeID, )
     for row in c.execute("SELECT rowid,* FROM nodes WHERE rowid=?", t):
         return {"id":row[0], "tripID":row[1], "name":row[2],"position":row[3],"list":row[4]}
-            
-    
+
+def removeNode(nodeID):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (nodeID, )
+    c.execute('DELETE FROM nodes WHERE rowid=?',t)
+    conn.commit()
+    print 'removed node with nodeID %s'%nodeID
+        
 def changePosition(node, newPos):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
