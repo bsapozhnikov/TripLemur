@@ -86,7 +86,7 @@ def handleTripRequest():
     elif request.method == 'POST':
         return `db.addTrip(session['userID'],request.json['name'])['id']`
     else:
-        db.removeTrip(tripID)
+        db.removeTrip(request.json['stuff here to get id'])
 @app.route('/trip/<tripID>',methods=['GET','POST'])
 def trip(tripID):
     if 'user' in session:
