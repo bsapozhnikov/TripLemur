@@ -10,17 +10,20 @@
 
   <body>
     <input type="hidden" name="userID" id="userID" value="{{userID|safe}}" />
+    
     <script type="text/template" id="trip-composite-template">
       <ul>
       </ul>
       New Trip: <input type="text" id="newtripname">
       <button id="addtrip">Add</button>
     </script>
+    
     <script type="text/template" id="trip-template">
       <div class="trip">
 	  <a href="/trip/<%- id%>">
 	      <li><%- name%></li>
 	  </a>
+	  <button id="deletetrip">Delete</button>
       </div>
     </script>
     

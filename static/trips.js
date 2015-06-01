@@ -20,10 +20,14 @@ App.TripView = Marionette.ItemView.extend({
     template: "#trip-template",
     events :{
 	'mouseover' : function(){
-	    console.log(this);
+	    //console.log(this);
 	    var infoView = new App.InfoView({model:this.model});
 	    App.info.show(infoView);
 	    infoView.render();
+	},
+	'click #deletetrip' : function(){
+	    this.model.collection.remove(this.model);
+	    this.model.destroy();
 	}
     }
 });
