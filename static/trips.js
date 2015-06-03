@@ -39,6 +39,11 @@ App.InfoView = Marionette.ItemView.extend({
 	'blur #edittripname' : function(){
 	    this.model.set('name',$('#edittripname').val()).save();
 	    $('#edittripname').replaceWith('<div id="tripname"><h4>'+this.model.get('name')+'</h4></div>');
+	},
+	'keydown #edittripname' : function(event){
+	    if(event.keyCode ==13){
+		$('#edittripname').blur();
+	    }
 	}
     }
 });

@@ -106,7 +106,11 @@ App.InfoView = Marionette.ItemView.extend({
 	    this.model.set('name',$('#editplacename').val()).save();
 	    $('#editplacename').replaceWith('<div id="placename"><h4>'+this.model.get('name')+'</h4></div>');
 	    console.log(this);
-	    
+	},
+	'keydown #editplacename' : function(event){
+	    if(event.keyCode ==13){
+		$('#editplacename').blur();
+	    }
 	}
     }
 });
@@ -205,6 +209,11 @@ App.NewPlacesView = Marionette.CompositeView.extend({
 				    that.collection.add(newP);
 				    $('#newplacename').val('');	    
 				}});
+	    }
+	},
+	'keydown #newplacename' : function(event){
+	    if(event.keyCode == 13){
+		$('#addplace').click();
 	    }
 	},
 	'update-sort':'updateSort',
