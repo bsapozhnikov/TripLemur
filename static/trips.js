@@ -31,7 +31,15 @@ App.TripView = Marionette.ItemView.extend({
 App.InfoView = Marionette.ItemView.extend({
     template: "#info-template",
     events:{
-	'mouseover':function(){console.log(this);}
+	'mouseover':function(){console.log(this);},
+	'click #tripname' : function(){
+	    var name = $('#tripname').replaceWith('<input type="text" id="edittripname" />');
+	    $('#edittripname').val(name.text()).focus();
+	},
+	'blur #edittripname' : function(){
+	    this.model.set('name',$('#edittripname').val()).save();
+	    $('#edittripname').replaceWith('<div id="tripname"><h4>'+this.model.get('name')+'</h4></div>');
+	}
     }
 });
 

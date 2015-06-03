@@ -104,6 +104,7 @@ App.InfoView = Marionette.ItemView.extend({
 	},
 	'blur #editplacename' : function(){
 	    this.model.set('name',$('#editplacename').val()).save();
+	    $('#editplacename').replaceWith('<div id="placename"><h4>'+this.model.get('name')+'</h4></div>');
 	    console.log(this);
 	    
 	}

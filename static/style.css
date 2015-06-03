@@ -11,9 +11,14 @@ ul{
 }
 
 .connectedSortable{
-    height: 100px; /* needs to be some absolute number of pixels */
+    height: 75%; /* needs to be some absolute number of pixels */
 }
-
+div.box{
+    /* margin-bottom: 10px; */
+}
+div#newplaceform{
+    text-align: center;
+}
 div.bordered{
     border: 5px solid fuchsia;
 }

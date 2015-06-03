@@ -86,6 +86,14 @@ def handleTripRequest():
     else:
         return `db.addTrip(session['userID'],request.json['name'])['id']`
 
+@app.route('/trips/<tripID>',methods=['PUT'])
+def handleUpdateTripRequest(tripID):
+    if request.method=='PUT':
+        L = request.json
+        trip = db.getTripByID(tripID)
+        db.updateTripInfo(L)
+        return 'true'
+        
 @app.route('/trip/<tripID>',methods=['GET','POST'])
 def trip(tripID):
     if 'user' in session:

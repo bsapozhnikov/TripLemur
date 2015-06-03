@@ -15,11 +15,15 @@
       <script type="text/template" id="place-collection-template">
 	  <ul class="connectedSortable"></ul>
       </script>
-    <script type="text/template" id="place-composite-template">
-      <ul class="connectedSortable">
-      </ul><br>
-      New Place: <input type="text" id="newplacename">
-      <button id="addplace">Add</button>
+      <script type="text/template" id="place-composite-template">
+	<div class="box">
+	  <ul class="connectedSortable">
+	  </ul><br>
+	</div>
+      <div id="newplaceform">
+	New Place: <input type="text" id="newplacename">
+	<button id="addplace">Add</button>
+      </div>
     </script>
     <script type="text/template" id="place-template">
 	<%- name%>

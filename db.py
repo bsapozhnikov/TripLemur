@@ -158,6 +158,14 @@ def getTrips(userID):
     print 'trips for user with id '+`userID`+": "+`trips`
     return trips
 
+
+def getTripByID(tripID):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (tripID, )
+    for row in c.execute("SELECT rowid,* FROM trips WHERE rowid=?", t):
+        return {"id":row[0], "user":row[1], "name":row[2]}
+    
 def getTrip(userID,name):
     'returns given trip'
     conn = sqlite3.connect('data.db')
@@ -171,6 +179,15 @@ def getTrip(userID,name):
     print 'trip for user with id %s and name %s'%(userID,name) + `trip`
     return trip
 
+def updateTripInfo(trip):
+    t = (trip['name'],trip['id'])
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    c.execute("UPDATE trips SET name = ? WHERE oid = ?", t) 
+    conn.commit()
+    print "updated node info"
+    return True
+    
 def addNode(tripID, name, li=1):
     position = 0
     oid = 0
