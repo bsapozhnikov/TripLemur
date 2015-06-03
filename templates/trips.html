@@ -16,11 +16,13 @@
       New Trip: <input type="text" id="newtripname">
       <button id="addtrip">Add</button>
     </script>
+    
     <script type="text/template" id="trip-template">
       <div class="trip">
 	  <a href="/trip/<%- id%>">
 	      <li><%- name%></li>
 	  </a>
+	  <button id="removetrip">Remove</button>
       </div>
     </script>
     
