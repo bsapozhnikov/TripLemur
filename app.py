@@ -93,7 +93,7 @@ def handleUpdateTripRequest(tripID):
         trip = db.getTripByID(tripID)
         db.updateTripInfo(L)
         return 'true'
-    else:
+    if request.method=='DELETE':
         db.removeTrip(tripID)
         return 'true'
         

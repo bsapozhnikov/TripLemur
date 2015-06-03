@@ -24,6 +24,11 @@ App.TripView = Marionette.ItemView.extend({
 	    var infoView = new App.InfoView({model:this.model});
 	    App.info.show(infoView);
 	    infoView.render();
+	},
+	'click #removetrip' : function(){
+	    console.log(this.model);
+	    this.model.collection.remove(this.model);
+	    this.model.destroy();
 	}
     }
 });
