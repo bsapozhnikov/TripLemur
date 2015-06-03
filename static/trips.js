@@ -26,6 +26,7 @@ App.TripView = Marionette.ItemView.extend({
 	    infoView.render();
 	},
 	'click #deletetrip' : function(){
+	    console.log(this.model);
 	    this.model.collection.remove(this.model);
 	    this.model.destroy();
 	}

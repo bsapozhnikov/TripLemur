@@ -150,8 +150,7 @@ def addTrip(user, name):
 def removeTrip(TripID):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-    t = (TripID)
-    c.execute("DELETE FROM trips WHERE id = ?", t)
+    c.execute("DELETE FROM trips WHERE oid = "+TripID)
     conn.commit()
     print "delete trip %s from trips" %(TripID)
 

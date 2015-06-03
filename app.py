@@ -77,7 +77,7 @@ def logout():
     return redirect('/login')
 
 @app.route('/trips',methods=['GET','POST', 'DELETE'])
-def handleTripRequest():
+def handleTripRequest():    
     if request.method=='GET':
         userID = request.args.get('userID')
         print 'requested userID: '+request.args.get('userID')
@@ -85,8 +85,16 @@ def handleTripRequest():
         return json.dumps(db.getTrips(userID))
     elif request.method == 'POST':
         return `db.addTrip(session['userID'],request.json['name'])['id']`
-    else:
-        db.removeTrip(request.json['stuff here to get id'])
+    
+        #db.removeTrip(request.json['stuff here to get id'])
+
+@app.route('/trips/<tripID>',methods=["DELETE"])
+def handleTripDeletionRequest(tripID):
+    if request.method=='DELETE':
+        print "this \n"
+        db.removeTrip(tripID)
+        return "true"
+
 @app.route('/trip/<tripID>',methods=['GET','POST'])
 def trip(tripID):
     if 'user' in session:
