@@ -1,6 +1,7 @@
 <html>
     <head>
 	<title>New User</title>
+	<script src="../static/lib/jquery.js"></script>
     </head>
     <body>
 	<main>
@@ -14,5 +15,14 @@
 	    </form>
 	    {% include 'messages.html' %}
 	</main>
+	<script>
+	 $('input[type="text"], input[type="password"]').on('keydown',function(e){
+	     if (e.which == 13){
+		 console.log('ENTER');
+		 $('input[type="submit"]').click();
+		 return false;
+	     }
+	 });
+	</script>
     </body>
 </html>

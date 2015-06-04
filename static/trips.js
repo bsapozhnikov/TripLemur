@@ -70,6 +70,11 @@ App.TripsView = Marionette.CompositeView.extend({
 				    $('#newtripname').val('');
 				}});
 	    }
+	},
+	'keydown #newtripname' : function(e){
+	    if(e.keyCode == 13){
+		$('#addtrip').click();
+	    }
 	}
     }
 });
