@@ -158,6 +158,12 @@ def getTrips(userID):
     print 'trips for user with id '+`userID`+": "+`trips`
     return trips
 
+def removeTrip(TripID):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    c.execute("DELETE FROM trips WHERE oid = "+TripID)
+    conn.commit()
+    print "delete trip %s from trips" %(TripID)
 
 def getTripByID(tripID):
     conn = sqlite3.connect('data.db')
