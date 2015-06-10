@@ -1,0 +1,48 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    font-family: "Arial Verdana",Arial,sans-serif;
+}
+
+ul{
+    list-style: none;
+    padding-left: 0;
+    line-height: 40px;
+}
+
+.connectedSortable{
+    height: 75%; /* needs to be some absolute number of pixels */
+}
+div.box{
+    /* margin-bottom: 10px; */
+}
+div#newplaceform{
+    text-align: center;
+}
+div.bordered{
+    border: 5px solid fuchsia;
+}
+div.tripList{
+    float: left;
+    height: 95vh;
+    width: 23%;
+}
+div#info, div#trash{
+    height: 48.9%;    
+}
+
+li{
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    margin: 5px;
+    background-color: #6bf;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+a{
+    text-decoration: none;
+}

@@ -16,30 +16,27 @@
 	  <ul class="connectedSortable"></ul>
       </script>
       <script type="text/template" id="place-composite-template">
-	<h3> Reserve Nodes </h3>
 	<div class="box">
 	  <ul class="connectedSortable">
 	  </ul><br>
 	</div>
-	<div id="newplaceform">
-	  New Place: <input type="text" id="newplacename">
-	  <button id="addplace">Add</button>
-	</div>
-      </script>
-      <script type="text/template" id="place-template">
+      <div id="newplaceform">
+	New Place: <input type="text" id="newplacename">
+	<button id="addplace">Add</button>
+      </div>
+    </script>
+    <script type="text/template" id="place-template">
 	<%- name%>
-      </script>
-      
-      <script type="text/template" id="info-template">
-	<h3> Info </h3>
+    </script>
+    
+    <script type="text/template" id="info-template">
 	<div id="placename"><h4><%- name%></h4></div>
-      </script>
-      <script type="text/template" id="trash-template">
-<!--	<h3> Trash </h3>!-->
-	<img src="http://www.clipartbest.com/cliparts/9iR/gE7/9iRgE7A4T.gif" alt="trash" style="width:71xpx;height:100px">
+    </script>
+    <script type="text/template" id="trash-template">
+	Trash
 	<ul class="connectedSortable">
 	</ul>
-      </script>
+    </script>
 
     <!-- <table border="1px"><tr><th>Trip Proper</th><th>Reserve</th><th>Places</th><th>Info</th></tr> -->
     <!--   <tr> -->
