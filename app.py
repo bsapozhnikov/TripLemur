@@ -101,15 +101,18 @@ def handlePlaceRequest():
         if request.args.get('getType')=='reserveNodes':
             return json.dumps(db.getReserveNodes(request.args.get('tripID')))
         ## NOT FINISHED
-        else :
+        elif request.args.get('getType')=='suggestedNodes' :
         ##need to substitue in general tripid and userid stuff 
             url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+" + db.getTripName(1,1) + "&key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo"
             response = urllib.urlopen(url)
             restaurants = json.loads(response.read())
+            print restaurants
             print "****** \n ******** \n RESTAURANTS:"
             for restaurant in restaurants["results"]:
                  print restaurant["name"]  
-            return restaurants["results"]
+            return json.dumps(restaurants["results"])
+        else:
+            return json.dumps('{}')
     else:
         return `db.addNode(request.json['tripID'],request.json['name'])`
     ##db.addNode(request.json['tripID'],request.json['name'])
@@ -141,3 +144,5 @@ if __name__ == '__main__':
     app.debug=True
     app.run()
         
+
+
