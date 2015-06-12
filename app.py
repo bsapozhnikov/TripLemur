@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, render_template, session, flash
-import db, cgi, json, urllib
+import db, cgi, json, urllib, urllib2
 
 app = Flask(__name__)
 app.secret_key = 'insert_clever_secret_here'
@@ -103,9 +103,25 @@ def handlePlaceRequest():
         ## NOT FINISHED
         elif request.args.get('getType')=='suggestedNodes' :
         ##need to substitue in general tripid and userid stuff 
-            url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+" + db.getTripName(1,1) + "&key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo"
-            response = urllib.urlopen(url)
-            restaurants = json.loads(response.read())
+           ## url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+" + "NYC" + "&key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo"
+            ##response = urllib.urlopen(url)
+            #url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo'
+            #values = {'query' : 'restaurants+in+NYC'}
+#            'key' : 'AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo'}
+            #data = urllib.urlencode(values)
+            #req = urllib2.Request(url,data)
+            #response = urllib2.urlopen(req)
+            #restaurants = response.read()
+            data = {}
+            data['key'] = 'AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo'
+            data['query']='restaurants+in+NYC'
+            url_values = urllib.urlencode(data)
+            url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
+            full_url = url + '?' + url_values
+            data = urllib2.urlopen(full_url)
+            print "Word"
+            ##print response.read()
+            ##restaurants = json.loads(response.read())
             print restaurants
             print "****** \n ******** \n RESTAURANTS:"
             for restaurant in restaurants["results"]:
