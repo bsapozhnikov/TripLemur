@@ -100,30 +100,15 @@ def handlePlaceRequest():
     if request.method=='GET':
         if request.args.get('getType')=='reserveNodes':
             return json.dumps(db.getReserveNodes(request.args.get('tripID')))
-        ## NOT FINISHED
         elif request.args.get('getType')=='suggestedNodes' :
-        ##need to substitue in general tripid and userid stuff 
-           ## url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+" + "NYC" + "&key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo"
-            ##response = urllib.urlopen(url)
-            #url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo'
-            #values = {'query' : 'restaurants+in+NYC'}
-#            'key' : 'AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo'}
-            #data = urllib.urlencode(values)
-            #req = urllib2.Request(url,data)
-            #response = urllib2.urlopen(req)
-            #restaurants = response.read()
             data = {}
             data['key'] = 'AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo'
-            data['query']='restaurants+in+NYC'
+            data['query']='restaurants+in+' + (db.getTripByID(request.args.get("tripID"))).get('name')
             url_values = urllib.urlencode(data)
             url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
             full_url = url + '?' + url_values
-            data = urllib2.urlopen(full_url)
-            print "Word"
-            ##print response.read()
-            ##restaurants = json.loads(response.read())
-            print restaurants
-            print "****** \n ******** \n RESTAURANTS:"
+            response = urllib2.urlopen(full_url)
+            restaurants = json.loads(response.read())
             for restaurant in restaurants["results"]:
                  print restaurant["name"]  
             return json.dumps(restaurants["results"])
