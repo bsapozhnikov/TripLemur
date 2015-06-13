@@ -300,7 +300,8 @@ var p2 = new Place({
     about: "this is also a place"
 });
 
-var placesPlaces = new Places('notDoneYet');
+
+var placesPlaces = new Places('suggestedNodes');
 var reservePlaces = new Places('reserveNodes');
 var tripPlaces = new Places('tripProperNodes');
 

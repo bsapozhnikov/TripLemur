@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, render_template, session, flash
-import db, cgi, json
+import db, cgi, json, urllib, urllib2
 
 app = Flask(__name__)
 app.secret_key = 'insert_clever_secret_here'
@@ -111,11 +111,22 @@ def handlePlaceRequest():
     if request.method=='GET':
         if request.args.get('getType')=='reserveNodes':
             return json.dumps(db.getReserveNodes(request.args.get('tripID')))
+        elif request.args.get('getType')=='suggestedNodes' :
+            data = {}
+            data['key'] = 'AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo'
+            data['query']='restaurants+in+' + (db.getTripByID(request.args.get("tripID"))).get('name')
+            url_values = urllib.urlencode(data)
+            url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
+            full_url = url + '?' + url_values
+            response = urllib2.urlopen(full_url)
+            restaurants = json.loads(response.read())
+            for restaurant in restaurants["results"]:
+                 print restaurant["name"]  
+            return json.dumps(restaurants["results"])
         elif request.args.get('getType')=='tripProperNodes':
             return json.dumps(db.getTripProperNodes(request.args.get('tripID')))
-        ## NOT FINISHED
         else:
-            return json.dumps([])
+            return json.dumps('{}')
     else:
         return `db.addNode(request.json['tripID'],request.json['name'])`
     ##db.addNode(request.json['tripID'],request.json['name'])
@@ -162,3 +173,5 @@ if __name__ == '__main__':
     app.debug=True
     app.run()
         
+
+

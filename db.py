@@ -184,6 +184,14 @@ def getTrip(userID,name):
         trip['name']=row[2]
     print 'trip for user with id %s and name %s'%(userID,name) + `trip`
     return trip
+    
+##COPIED FROM OTHER BRANCH
+def getTripByID(tripID):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (tripID, )
+    for row in c.execute("SELECT rowid,* FROM trips WHERE rowid=?", t):
+        return {"id":row[0], "user":row[1], "name":row[2]} 
 
 def updateTripInfo(trip):
     t = (trip['name'],trip['id'])
