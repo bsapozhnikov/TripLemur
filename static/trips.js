@@ -24,6 +24,11 @@ App.TripView = Marionette.ItemView.extend({
 	    var infoView = new App.InfoView({model:this.model});
 	    App.info.show(infoView);
 	    infoView.render();
+	},
+	'click #removetrip' : function(){
+	    console.log(this.model);
+	    this.model.collection.remove(this.model);
+	    this.model.destroy();
 	}
     }
 });
@@ -31,7 +36,20 @@ App.TripView = Marionette.ItemView.extend({
 App.InfoView = Marionette.ItemView.extend({
     template: "#info-template",
     events:{
-	'mouseover':function(){console.log(this);}
+	'mouseover':function(){console.log(this);},
+	'click #tripname' : function(){
+	    var name = $('#tripname').replaceWith('<input type="text" id="edittripname" />');
+	    $('#edittripname').val(name.text()).focus();
+	},
+	'blur #edittripname' : function(){
+	    this.model.set('name',$('#edittripname').val()).save();
+	    $('#edittripname').replaceWith('<div id="tripname"><h4>'+this.model.get('name')+'</h4></div>');
+	},
+	'keydown #edittripname' : function(event){
+	    if(event.keyCode ==13){
+		$('#edittripname').blur();
+	    }
+	}
     }
 });
 
@@ -56,6 +74,11 @@ App.TripsView = Marionette.CompositeView.extend({
 				    that.collection.add(newT);
 				    $('#newtripname').val('');
 				}});
+	    }
+	},
+	'keydown #newtripname' : function(e){
+	    if(e.keyCode == 13){
+		$('#addtrip').click();
 	    }
 	}
     }

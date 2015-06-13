@@ -86,6 +86,17 @@ def handleTripRequest():
     else:
         return `db.addTrip(session['userID'],request.json['name'])['id']`
 
+@app.route('/trips/<tripID>',methods=['PUT', 'DELETE'])
+def handleUpdateTripRequest(tripID):
+    if request.method=='PUT':
+        L = request.json
+        trip = db.getTripByID(tripID)
+        db.updateTripInfo(L)
+        return 'true'
+    if request.method=='DELETE':
+        db.removeTrip(tripID)
+        return 'true'
+        
 @app.route('/trip/<tripID>',methods=['GET','POST'])
 def trip(tripID):
     if 'user' in session:
@@ -112,6 +123,8 @@ def handlePlaceRequest():
             for restaurant in restaurants["results"]:
                  print restaurant["name"]  
             return json.dumps(restaurants["results"])
+        elif request.args.get('getType')=='tripProperNodes':
+            return json.dumps(db.getTripProperNodes(request.args.get('tripID')))
         else:
             return json.dumps('{}')
     else:
@@ -119,17 +132,32 @@ def handlePlaceRequest():
     ##db.addNode(request.json['tripID'],request.json['name'])
     ##return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
 
-@app.route('/places/<nodeID>',methods=['PUT'])
+@app.route('/places/<nodeID>',methods=['PUT','DELETE'])
 def handleUpdatePlaceRequest(nodeID):
-    #get new position of node from request.json["position"]
-    #update position of node from data.db to new position (see above)
-    L = request.json
-    print "\n\n\n\n\n\n\n\n\n\n"
-    print nodeID
-    print L
-    print "\n\n\n\n\n\n\n\n\n\n\n\n"
-    db.changePosition(nodeID, L["position"])
-    return "true"
+    if request.method=='PUT':
+        #get new position of node from request.json["position"]
+        #update position of node from data.db to new position (see above)
+        L = request.json
+        node = db.getNode(nodeID)
+        print nodeID
+        print L
+        print node
+        changePosition = node['position'] != L['position']
+        changeList = node['list']!=L['list']
+        if changePosition or changeList:
+            if changePosition:
+                print 'updating position'
+                db.changePosition(nodeID, L["position"])
+            if changeList:
+                print 'updating list'
+                db.updateNodeList(node['tripID'],node['name'],L['list'])
+        else:
+            print 'updating info'
+            db.updateNodeInfo(L);
+        return "true"
+    else:
+        db.removeNode(nodeID)
+        return "true"
     
 # @app.route('/places',methods=['GET','POST'])
 # def handlePlaces():

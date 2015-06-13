@@ -5,6 +5,7 @@
     <script src="../static/lib/lodash.js"></script>
     <script src="../static/lib/backbone.js"></script>
     <script src="../static/lib/backbone.marionette.js"></script>
+    <link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
   </head>
 
   <body>
@@ -15,16 +16,18 @@
       New Trip: <input type="text" id="newtripname">
       <button id="addtrip">Add</button>
     </script>
+    
     <script type="text/template" id="trip-template">
       <div class="trip">
 	  <a href="/trip/<%- id%>">
 	      <li><%- name%></li>
 	  </a>
+	  <button id="removetrip">Remove</button>
       </div>
     </script>
     
     <script type="text/template" id="info-template">
-      <h4><%- name%></h4>
+      <div id="tripname"><h4><%- name%></h4></div>
       <br>
       <%- about%>
     </script>

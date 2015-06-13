@@ -1,7 +1,7 @@
 <html>
     <head>
 	<title>Login</title>
-	<!-- No CSS file yet -->
+	<script src="../static/lib/jquery.js"></script>
 	<link rel="stylesheet" href="/static/style.css" type="text/css" media="screen" />
     </head>
     <body>
@@ -16,5 +16,14 @@
 	</form>
 	<br>or...<br><a class="button" href="/register"><span>Register</span></a>
 	{% include 'messages.html' %}
+	<script>
+	 $('input[type="text"], input[type="password"]').on('keydown',function(e){
+	     if (e.which == 13){
+		 console.log('ENTER');
+		 $('input[type="submit"]').click();
+		 return false;
+	     }
+	 });
+	</script>
     </body>
 </html>

@@ -26,14 +26,14 @@ def createTables():
     createTable('users', [('username','text'),('pw','text')]) ##not sure what else needs to go here
     createTable('trips', [('user', 'text'), ('name', 'text')])
     createTable('nodes', [('tripID', 'integer'), ('name', 'text'),
-                          ('position', "integer"), ('list', 'integer')])
-    createTable('links', [("startID", "integer"), ("endID", "integer")])
+                          ('position', "integer"), ('list', 'integer'),
+                          ('details', 'text')])
 
 def dropTables():
     dropTable('users')
     dropTable('trips')
     dropTable('nodes')
-    dropTable('links')
+
     
 def validateUser(user, pw):
    # for row in c.execute("SELECT oid,* FROM users"):
@@ -158,6 +158,20 @@ def getTrips(userID):
     print 'trips for user with id '+`userID`+": "+`trips`
     return trips
 
+def removeTrip(TripID):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    c.execute("DELETE FROM trips WHERE oid = "+TripID)
+    conn.commit()
+    print "delete trip %s from trips" %(TripID)
+
+def getTripByID(tripID):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (tripID, )
+    for row in c.execute("SELECT rowid,* FROM trips WHERE rowid=?", t):
+        return {"id":row[0], "user":row[1], "name":row[2]}
+    
 def getTrip(userID,name):
     'returns given trip'
     conn = sqlite3.connect('data.db')
@@ -179,15 +193,24 @@ def getTripByID(tripID):
     for row in c.execute("SELECT rowid,* FROM trips WHERE rowid=?", t):
         return {"id":row[0], "user":row[1], "name":row[2]} 
 
-def addNode(tripID, name, li=1):
+def updateTripInfo(trip):
+    t = (trip['name'],trip['id'])
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    c.execute("UPDATE trips SET name = ? WHERE oid = ?", t) 
+    conn.commit()
+    print "updated node info"
+    return True
+    
+def addNode(tripID, name, li=1, details=""):
     position = 0
     oid = 0
     conn=sqlite3.connect('data.db')
     c = conn.cursor()
     c.execute("SELECT last_insert_rowid()")
-    t = (tripID, name, position, li)
+    t = (tripID, name, position, li, details)
     R = (tripID, )
-    c.execute("INSERT INTO nodes VALUES (?,?,?,?)", t)
+    c.execute("INSERT INTO nodes VALUES (?,?,?,?,?)", t)
     for row in c.execute("SELECT rowid,* FROM nodes WHERE tripID=?", R):
         position = position + 1
         oid = row[0]
@@ -198,14 +221,33 @@ def addNode(tripID, name, li=1):
     print "added %s to trip %s's nodes" %(name, tripID)
     return oid
 
+def updateNodeInfo(node):
+    t = (node['name'],node['id'])
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    c.execute("UPDATE nodes SET name = ? WHERE oid = ?", t) 
+    conn.commit()
+    print "updated node info"
+    return True
+
+def updateNodeDetails(node, details):
+    t = (details, node['id'])
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    c.execute("UPDATE nodes SET details = ? WHERE oid = ?", t) 
+    conn.commit()
+    print "updated node details"
+    return True
+
+       
 def getNodes(tripID):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
     t = (tripID, )
     nodes = []
     for row in c.execute("SELECT rowid,* FROM nodes WHERE tripID=?", t):
-        nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3],"list":row[4]})
-    print "nodes for trip with id "+`tripID`+": " +`nodes`
+        nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3],"list":row[4], "details":row[5]})
+    print "nodes for trip with id "+`tripID`+": "+`nodes`
     return nodes
 
 def updateNodeList(tripID, name, newlist):
@@ -220,6 +262,15 @@ def updateNodeList(tripID, name, newlist):
     else:
         print "invalid input, newlist must be 0 or 1"
     
+def getTripProperNodes(tripID):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (tripID, )
+    nodes = []
+    for row in c.execute("SELECT rowid,* FROM nodes WHERE tripID=? AND list=0", t):
+        nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3],"list":row[4], "details":row[5]})
+    print "reserve nodes for trip with id "+`tripID`+": "+`nodes`
+    return nodes
 
 def getReserveNodes(tripID):
     conn = sqlite3.connect('data.db')
@@ -227,10 +278,25 @@ def getReserveNodes(tripID):
     t = (tripID, )
     nodes = []
     for row in c.execute("SELECT rowid,* FROM nodes WHERE tripID=? AND list=1", t):
-        nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3],"list":row[4]})
+        nodes.append({"id":row[0], "tripID":row[1], "name":row[2],"position":row[3],"list":row[4], "details":row[5]})
     print "reserve nodes for trip with id "+`tripID`+": "+`nodes`
     return nodes
 
+def getNode(nodeID):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (nodeID, )
+    for row in c.execute("SELECT rowid,* FROM nodes WHERE rowid=?", t):
+        return {"id":row[0], "tripID":row[1], "name":row[2],"position":row[3],"list":row[4], "details":row[5]}
+
+def removeNode(nodeID):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    t = (nodeID, )
+    c.execute('DELETE FROM nodes WHERE rowid=?',t)
+    conn.commit()
+    print 'removed node with nodeID %s'%nodeID
+        
 def changePosition(node, newPos):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
@@ -240,22 +306,3 @@ def changePosition(node, newPos):
    # print "changed node "+node+" position to "+newPos
     return True
     
-def addLink(startID, endID):
-    conn=sqlite3.connect('data.db')
-    c = conn.cursor()
-    t = (startID, endID)
-    c.execute("INSERT INTO links VALUES (?,?)", t)
-    conn.commit()
-    print "added link from node %s to node %s"%(startID,endID)
-
-def getLink(startID, endID):
-    conn = sqlite3.connect('data.db')
-    c = conn.cursor()
-    t = (startID, endID)
-    link = {}
-    for row in c.execute("SELECT rowid,* FROM links WHERE startID=? AND endID=?", t):
-        link['id']=row[0]
-        link['startID']=row[1]
-        link['endID']=row[2]
-    print "link from node %s to node %s"%(startID,endID)
-    return link
