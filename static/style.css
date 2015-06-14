@@ -1,17 +1,52 @@
+html{
+    font-family: "Arial Verdana",Arial,sans-serif;  
+}  
 body{
     margin: 0px;
-    padding: 0px;
-    font-family: "Arial Verdana",Arial,sans-serif;
+    padding: 10px;
+    background-color: #F5FFF5;
 }
 
+h3, h1 {
+    text-align: center;
+    font-family: "Georgia";
+    font-weight: bold;
+    color: #6bf;
+    
+}
 ul{
     list-style: none;
-    padding-left: 0;
+    padding: 10px;   
     line-height: 40px;
+    overflow: hidden;
+}
+
+input[type=text] {
+    border: 1px;
+    border-style: ridge;
+    border-color: #6bf;
+
+}
+button, input[type=submit]{
+    border-radius:5px;
+    color: #6bf;
+    font-family: "Arial Verdana",Arial,sans-serif;
+    
+}
+
+button:hover {
+    background:black;
+    box-shadow: 0px 0px 1px;
 }
 
 .connectedSortable{
-    height: 75%; /* needs to be some absolute number of pixels */
+    height: 75%;
+}
+.menu {
+    display: inline;
+    color: #fff;
+    align: right;
+    margin: 5px;
 }
 div.box{
     /* margin-bottom: 10px; */
@@ -22,20 +57,26 @@ div#newplaceform{
 div#placename, div#placedetails{
     min-height: 1em;
 }
-div.bordered{
+
+/*div.bordered{
     border: 5px solid fuchsia;
-}
+}*/
 div.tripList{
     float: left;
-    height: 95vh;
-    width: 23%;
+    height: 600px;
+    width: 300px;
 }
-div#info, div#trash{
-    height: 48.9%;    
+div#info{
+    height: 360px;    
 }
-
+div#trash{
+    height: 110px;
+    margin: 0px;
+    padding: 0px;
+    text-align: right;
+}
 li{
-    display: block;
+    display: block ;
     height: 40px;
     line-height: 40px;
     margin: 5px;

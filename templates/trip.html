@@ -1,54 +1,65 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <script src="../static/lib/jquery.js"></script>
-      <script src="../static/lib/jquery-ui.js"></script>
-      <script src="../static/lib/lodash.js"></script>
-      <script src="../static/lib/backbone.js"></script>
-      <script src="../static/lib/backbone.marionette.js"></script>
-      <link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
+    <script src="../static/lib/jquery.js"></script>
+    <script src="../static/lib/jquery-ui.js"></script>
+    <script src="../static/lib/lodash.js"></script>
+    <script src="../static/lib/backbone.js"></script>
+    <script src="../static/lib/backbone.marionette.js"></script>
+    <link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
+    <h1><center> Trip Lemur<center></h1>
   </head>
-
   <body>
-      <input type="hidden" name="userID" id="userID" value="{{userID|safe}}" />
-      <input type="hidden" name="tripID" id="tripID" value="{{tripID|safe}}" />
-      <script type="text/template" id="place-collection-template">
-	  <ul class="connectedSortable"></ul>
-      </script>
-      <script type="text/template" id="place-composite-template">
-	<div class="box">
-	  <ul class="connectedSortable">
-	  </ul><br>
-	</div>
+    <input type="hidden" name="userID" id="userID" value="{{userID|safe}}" />
+    <input type="hidden" name="tripID" id="tripID" value="{{tripID|safe}}" />
+    <ul align="right">
+      <li class="menu"><a href="/home">Trips</a></li>
+      <li class="menu"><a href="/about">About</a></li>
+      <li class="menu"><a href="/logout">Log Out</a></li>
+
+    </ul>
+    <script type="text/template" id="place-collection-template">
+      <ul class="connectedSortable"></ul>
+    </script>
+    <script type="text/template" id="place-composite-template">
+      <h3> Reserve Nodes </h3>
+      <div class="box">
+	<ul class="connectedSortable">
+	</ul><br>
+      </div>
       <div id="newplaceform">
-	New Place: <input type="text" id="newplacename">
-	<button id="addplace">Add</button>
+	<h4>New Place: <input type="text" id="newplacename">
+	<button id="addplace">Add</button></h4>
       </div>
     </script>
     <script type="text/template" id="place-template">
-	<%- name%>	
+      <%- name%>
     </script>
     
     <script type="text/template" id="info-template">
-	<div id="placename"><h4><%- name%></h4></div>
-	<div id="placedetails"><h4><%- details%></h4></div>
+      <div id="placename"><h4><%- name%></h4></div>
+      <div id="placedetails"><%- details%></div>
     </script>
     <script type="text/template" id="trash-template">
-	Trash
-	<ul class="connectedSortable">
-	</ul>
+      <img src="http://www.clipartbest.com/cliparts/9iR/gE7/9iRgE7A4T.gif" alt="trash" style="width:71xpx;height:100px">
+    </script>
+    <script type="text/template" id="place-template">
+      <%- name%>	
     </script>
 
     <!-- <table border="1px"><tr><th>Trip Proper</th><th>Reserve</th><th>Places</th><th>Info</th></tr> -->
     <!--   <tr> -->
-    	<div id="tripProper" class="tripList bordered"></div>
-    	<div id="reserve" class="tripList bordered"></div>
-    	<div id="places" class="tripList bordered"></div>
-    	<div class="tripList">
-	    <div id="info" class="bordered"></div>
-	    <div id="trash" class="bordered"></div>
-	</div>
-     <!--  </tr> -->
+    <div> <h3> Trip Proper </h3>
+      <div id="tripProper" class="tripList bordered"> </div> </div>
+    <div> <h3> Reserve Places </h3>
+      <div id="reserve" class="tripList bordered"></div> </div>
+    <div> <h3> Suggested Places </h3> <div id="places" class="tripList bordered"> </div> </div>
+    <div class="tripList">
+      <div> <h3> Info </h3>
+	<div id="info" class="bordered"> </div></div>
+      <div id="trash" class="bordered"></div>
+    </div>
+    <!--  </tr> -->
     <!-- </table> -->
 
     <script src="../static/trip.js"></script>
