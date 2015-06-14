@@ -120,15 +120,26 @@ def handlePlaceRequest():
             full_url = url + '?' + url_values
             response = urllib2.urlopen(full_url)
             restaurants = json.loads(response.read())
+            r = []
             for restaurant in restaurants["results"]:
-                 print restaurant["name"]  
-            return json.dumps(restaurants["results"])
+                print restaurant["name"]
+                r.append({'name':restaurant['name'],
+                          'tripID':request.args.get('tripID'),
+                          'details':'details'})
+            ##return json.dumps(restaurants["results"])
+
+            ## dummy 'r' for testing purposes ##
+            r = [{'name':'Times Square','tripID':request.args.get('tripID'),'details':'details'},
+                 {'name':'Stuy','tripID':request.args.get('tripID'),'details':'details'}]
+            
+            return json.dumps(r)    
         elif request.args.get('getType')=='tripProperNodes':
             return json.dumps(db.getTripProperNodes(request.args.get('tripID')))
         else:
             return json.dumps('{}')
     else:
-        return `db.addNode(request.json['tripID'],request.json['name'])`
+        li = request.json['name'] if 'list' in request.json else 1
+        return `db.addNode(request.json['tripID'],request.json['name'],li)`
     ##db.addNode(request.json['tripID'],request.json['name'])
     ##return 'User %s added a trip named %s'%(session['userID'],request.json['name'])
 
