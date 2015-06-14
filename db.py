@@ -202,7 +202,7 @@ def updateTripInfo(trip):
     print "updated node info"
     return True
     
-def addNode(tripID, name, li=1, details=""):
+def addNode(tripID, name, li=1, details="details"):
     position = 0
     oid = 0
     conn=sqlite3.connect('data.db')
@@ -225,7 +225,9 @@ def updateNodeInfo(node):
     t = (node['name'],node['id'])
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-    c.execute("UPDATE nodes SET name = ? WHERE oid = ?", t) 
+    c.execute("UPDATE nodes SET name = ? WHERE oid = ?", t)
+    t = (node['details'],node['id'])
+    c.execute("UPDATE nodes SET details = ? WHERE oid = ?", t)
     conn.commit()
     print "updated node info"
     return True

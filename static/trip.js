@@ -22,15 +22,23 @@ var updateSortedModels = function(){
     App.tripProper.currentView.collection.each(function(Place){
 	console.log(Place);
 	Place.save(null,{success:function(model,response){
-	    console.log(typeof response);
 	    if(typeof response == 'number'){
+		console.log('moved suggested node for the first time');
+		model.set('id',response);
+		model.set('details','details');
 		model.save('id',response);
 	    }
 	}});
     });
     App.reserve.currentView.collection.each(function(Place) {
 	console.log(Place);
-	Place.save();
+	Place.save(null,{success:function(model,response){
+	    if(typeof response == 'number'){
+		model.set('id',response);
+		model.set('details','details');
+		model.save('id',response);
+	    }
+	}});
     });
 };
 var resetSortable = function(){
@@ -119,6 +127,20 @@ App.InfoView = Marionette.ItemView.extend({
 	'keydown #editplacename' : function(event){
 	    if(event.keyCode ==13){
 		$('#editplacename').blur();
+	    }
+	},
+	'click #placedetails' : function(){
+	    var det = $('#placedetails').replaceWith('<input type="text" id="editplacedetails" />');
+	    $('#editplacedetails').val(det.text()).focus();
+	},
+	'blur #editplacedetails' : function(){
+	    this.model.set('details',$('#editplacedetails').val()).save();
+	    $('#editplacedetails').replaceWith('<div id="placedetails"><h4>'+this.model.get('details')+'</h4></div>');
+	    console.log(this);
+	},
+	'keydown #editplacedetails' : function(event){
+	    if(event.keyCode ==13){
+		$('#editplacedetails').blur();
 	    }
 	}
     }
@@ -210,7 +232,7 @@ App.NewPlacesView = Marionette.CompositeView.extend({
 		newP.save(null,{error: function(){console.log('errorr');},
 				success: function(d,r){
 				    newP.set('id',r);
-				    newP.set('details','');
+				    newP.set('details','details');
 				    newP.set('list',1);
 				    that.collection.add(newP);
 				    $('#newplacename').val('');	    
@@ -295,12 +317,14 @@ var Places = Backbone.Collection.extend({
 
 var p1 = new Place({
     name:"test",
-    about: "this is a place"
+    about: "this is a place",
+    details: 'details'
 });
 
 var p2 = new Place({
     name:"test 2",
-    about: "this is also a place"
+    about: "this is also a place",
+    details: 'details'
 });
 
 
