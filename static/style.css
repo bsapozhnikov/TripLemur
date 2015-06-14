@@ -12,6 +12,7 @@ h3, h1 {
     font-family: "Georgia";
     font-weight: bold;
     color: #6bf;
+    
 }
 ul{
     list-style: none;
@@ -22,6 +23,7 @@ ul{
 
 input[type=text] {
     border: 1px;
+    border-style: ridge;
     border-color: #6bf;
 
 }
@@ -44,6 +46,7 @@ button:hover {
     display: inline;
     color: #fff;
     align: right;
+    margin: 5px;
 }
 div.box{
     /* margin-bottom: 10px; */
@@ -55,19 +58,19 @@ div#placename, div#placedetails{
     min-height: 1em;
 }
 
-div.bordered{
+/*div.bordered{
     border: 5px solid fuchsia;
-}
+}*/
 div.tripList{
     float: left;
-    height: 95vh;
+    height: 600px;
     width: 300px;
 }
 div#info{
-    height: 500px;    
+    height: 360px;    
 }
 div#trash{
-    height: 100px;
+    height: 110px;
     margin: 0px;
     padding: 0px;
     text-align: right;
