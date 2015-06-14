@@ -6,8 +6,7 @@
     </head>
     <body>
 	<ul id="menu">
-	    <li class="menu"><a href="/about">About</a></li>
-	    
+	    <li><a href="/about">About</a></li>
 	</ul>
 	<form method="post" class="box">
 	    <!--<p> Note: You will be automatically directed to your home page if you are already logged in.</p>-->

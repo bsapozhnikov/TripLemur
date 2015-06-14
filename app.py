@@ -76,6 +76,10 @@ def logout():
     session.pop('userID',None)
     return redirect('/login')
 
+@app.route('/about')
+def about():
+    return render_template("about.html")
+
 @app.route('/trips',methods=['GET','POST'])
 def handleTripRequest():
     if request.method=='GET':
