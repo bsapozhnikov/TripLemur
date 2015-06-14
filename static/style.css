@@ -26,6 +26,9 @@ div.box{
 div#newplaceform{
     text-align: center;
 }
+div#placename, div#placedetails{
+    min-height: 1em;
+}
 div.bordered{
     border: 5px solid fuchsia;
 }
