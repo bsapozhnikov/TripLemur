@@ -22,8 +22,8 @@
       <ul class="connectedSortable"></ul>
     </script>
     <script type="text/template" id="place-composite-template">
-      <h3> Reserve Nodes </h3>
       <div class="box">
+	<h3> Reserve Places</h3>
 	<ul class="connectedSortable">
 	</ul><br>
       </div>
@@ -37,6 +37,7 @@
     </script>
     
     <script type="text/template" id="info-template">
+      <h3> Info </h3>
       <div id="placename"><h4><%- name%></h4></div>
       <div id="placedetails"><%- details%></div>
     </script>
@@ -48,16 +49,13 @@
     </script>
 
     <!-- <table border="1px"><tr><th>Trip Proper</th><th>Reserve</th><th>Places</th><th>Info</th></tr> -->
-    <!--   <tr> -->
-    <div> <h3> Trip Proper </h3>
-      <div id="tripProper" class="tripList bordered"> </div> </div>
-    <div> <h3> Reserve Places </h3>
-      <div id="reserve" class="tripList bordered"></div> </div>
-    <div> <h3> Suggested Places </h3> <div id="places" class="tripList bordered"> </div> </div>
+    <!--   <tr> --> 
+    <div id="tripProper" class="tripList bordered"> </div>
+    <div id="reserve" class="tripList bordered"></div>
+    <div id="places" class="tripList bordered"> </div> 
     <div class="tripList">
-      <div> <h3> Info </h3>
-	<div id="info" class="bordered"> </div></div>
-      <div id="trash" class="bordered"></div>
+      <div id="info" class="bordered"> </div>
+      <div id="trash" class="bordered"> </div>
     </div>
     <!--  </tr> -->
     <!-- </table> -->
