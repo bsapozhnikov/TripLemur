@@ -1,5 +1,10 @@
 # Trip Lemur #
 
+## Take a Look! ##
+
+Visit: http://godega.csproject.org/ or http://104.236.250.49/
+Video: https://www.youtube.com/watch?v=C_gP5z6jKCQ&feature=youtu.be
+
 ## What ##
 
 This app is a tool for people who want to plan/organize trips. It aims to assist people in planning while also allowing the user to choose the specific means/level of organization they are comfortable with.
@@ -26,9 +31,8 @@ Maria and Natan will be focusing on frontend (html, css, Marionette, etc.)
 
 + login mechanism
 + trips page to show user's trips, and input field to add new trips
-+ Currently Working On: Individual trip page
-   + input to make new nodes (unordered)
-   + nodes are sortable (but not on the back end yet)
++ trip page to show trip's places, and input fields to add and edit places
++ The project
 
 
 
