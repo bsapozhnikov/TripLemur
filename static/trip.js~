@@ -315,7 +315,7 @@ var Places = Backbone.Collection.extend({
     }
 });
 
-/*var p1 = new Place({
+var p1 = new Place({
     name:"test",
     about: "this is a place",
     details: 'details'
@@ -325,7 +325,7 @@ var p2 = new Place({
     name:"test 2",
     about: "this is also a place",
     details: 'details'
-});*/
+});
 
 
 var placesPlaces = new Places('suggestedNodes');
