@@ -133,8 +133,8 @@ def handlePlaceRequest():
             ##return json.dumps(restaurants["results"])
 
             ## dummy 'r' for testing purposes ##
-            r = [{'name':'Times Square','tripID':request.args.get('tripID'),'details':'details'},
-                 {'name':'Stuy','tripID':request.args.get('tripID'),'details':'details'}]
+            #r = [{'name':'Times Square','tripID':request.args.get('tripID'),'details':'details'},
+            #     {'name':'Stuy','tripID':request.args.get('tripID'),'details':'details'}]
             
             return json.dumps(r)    
         elif request.args.get('getType')=='tripProperNodes':
